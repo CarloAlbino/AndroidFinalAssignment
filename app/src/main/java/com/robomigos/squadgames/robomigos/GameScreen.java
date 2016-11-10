@@ -115,21 +115,6 @@ public class GameScreen extends Screen {
 
     }
 
-    public void DrawNewScene()
-    {
-        blobXPos = random.nextInt(g.getWidth() - blob.GetWidth());
-        blobYPos = random.nextInt(g.getHeight() - blob.GetHeight());
-
-        // Draw new Background
-        game.getGraphics().drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-
-        // Draw a new blob
-        blob = new Button(g, blobImage, blobXPos, blobYPos, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        blob.Draw();
-
-        timePassed = 0;
-    }
-
     public void drawText(Graphics g, String line, int x, int y)
     {
         int len = line.length();

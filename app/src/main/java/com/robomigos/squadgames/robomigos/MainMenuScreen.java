@@ -58,7 +58,7 @@ public class MainMenuScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-        playButton.Draw();;
+        playButton.Draw();
     }
 
     @Override

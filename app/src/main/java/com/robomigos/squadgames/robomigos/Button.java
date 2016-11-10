@@ -36,27 +36,29 @@ public class Button {
         ConvertToScreenCoord();
     }
 
+    // Helper functions
     public int Left() {return left;}
     public int Right() {return right;}
     public int Top() {return top;}
     public int Bottom() {return bottom;}
     public Pixmap GetImage() {return image;}
-
     public int GetWidth()
     {
         return screenRight - screenLeft;
     }
-
     public int GetHeight()
     {
         return  screenBottom - screenTop;
     }
-    
+
+    // Draw the button onto the screen
     public void Draw()
     {
         graphics.drawPixmap(image, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
     }
 
+    // Update the position of the button, this can be used to create a moving button
+    // or to reuse the same button on different parts of the screen
     public void UpdatePosition(int x, int y)
     {
         left = x;
@@ -65,6 +67,7 @@ public class Button {
         ConvertToScreenCoord();
     }
 
+    // Check if a touch is in the button's bounds
     public boolean IsInBounds(Input.TouchEvent event)
     {
         if (event.x > screenLeft && event.x < screenRight - 1 &&
@@ -74,12 +77,14 @@ public class Button {
             return false;
     }
 
+    // Set the right and bottom bounds of the button in screen percentage units
     private void SetBottomRight()
     {
         right = left + (int)((float)(100 * srcWidth/ screenWidth) * bgRatio);
         bottom = top + (int)((float)(100 * srcHeight/ screenHeight) * bgRatio);
     }
 
+    // Convert the screen percentage units of the bounds to screen coordinates
     private void ConvertToScreenCoord()
     {
         screenLeft = (int)((left * 0.01f) * screenWidth);
