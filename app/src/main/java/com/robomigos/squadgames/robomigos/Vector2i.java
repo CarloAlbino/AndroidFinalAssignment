@@ -3,7 +3,7 @@ package com.robomigos.squadgames.robomigos;
 /**
  * Created by Carlo Albino on 2016-11-10.
  */
-
+//GG
 public class Vector2i {
     public int X, Y;
 
