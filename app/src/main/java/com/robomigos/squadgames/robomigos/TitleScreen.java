@@ -31,14 +31,14 @@ public class TitleScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);
-        logo = g.newPixmap("RobomigosLogo.png", Graphics.PixmapFormat.ARGB4444);
+        background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);   // RGB565 non - transparent
+        logo = g.newPixmap("RobomigosLogo.png", Graphics.PixmapFormat.ARGB4444);        // ARGB4444 transparent
         startButtonImage = g.newPixmap("StartButton.png", Graphics.PixmapFormat.ARGB4444);
         howToPlayButtonImage = g.newPixmap("HowToPlayButton.png", Graphics.PixmapFormat.ARGB4444);
         creditsButtonImage = g.newPixmap("CreditsButton.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
-        bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
+        bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight(); // Have this line in each screen constructor after background is set
 
         // Create buttons
         startButton = new Button(g, startButtonImage, startButtonImage, 33, 50, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
@@ -59,6 +59,7 @@ public class TitleScreen extends Screen {
             {
                 if(howToButton.IsInBounds(event))
                 {
+                    // Do stuff
                     game.setScreen(new InstructionsScreen(game));
                     return;
                 }
