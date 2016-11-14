@@ -63,7 +63,7 @@ public class TitleScreen extends Screen {
             {
                 if(startButton.IsInBounds(event))
                 {
-                    game.setScreen(new ReleaseScreen(game));
+                    game.setScreen(new ShopScreen(game));
                     return;
                 }
 

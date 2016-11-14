@@ -15,9 +15,9 @@ import java.util.List;
 public class BattleScreen extends Screen {
 
     public static Pixmap buttonBackgroundImage;
-    public static Pixmap fireButtonImage;
-    public static Pixmap leafButtonImage;
-    public static Pixmap waterButtonImage;
+   //public static Pixmap fireButtonImage;
+   //public static Pixmap leafButtonImage;
+   //public static Pixmap waterButtonImage;
     public static Pixmap backButtonImage;
 
     public BattleScreen(Game game)
