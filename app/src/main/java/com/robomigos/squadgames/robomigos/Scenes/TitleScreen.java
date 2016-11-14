@@ -1,10 +1,14 @@
-package com.robomigos.squadgames.robomigos;
+package com.robomigos.squadgames.robomigos.Scenes;
 
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
+import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.Scenes.CreditsScreen;
+import com.robomigos.squadgames.robomigos.Scenes.InstructionsScreen;
+import com.robomigos.squadgames.robomigos.Scenes.ReleaseScreen;
 
 import java.util.List;
 
@@ -57,6 +61,12 @@ public class TitleScreen extends Screen {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
+                if(startButton.IsInBounds(event))
+                {
+                    game.setScreen(new ReleaseScreen(game));
+                    return;
+                }
+
                 if(howToButton.IsInBounds(event))
                 {
                     // Do stuff

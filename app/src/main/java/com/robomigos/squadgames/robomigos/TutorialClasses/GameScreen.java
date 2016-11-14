@@ -1,10 +1,12 @@
-package com.robomigos.squadgames.robomigos;
+package com.robomigos.squadgames.robomigos.TutorialClasses;
 
 import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
+import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.TutorialClasses.MainMenuScreen;
 
 import java.util.List;
 import java.util.Random;
