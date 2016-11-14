@@ -7,6 +7,6 @@ public class SimpleGame extends AndroidGame {
 
     @Override
     public Screen getStartScreen() {
-        return new MainMenuScreen(this);
+        return new TitleScreen(this);
     }
 }

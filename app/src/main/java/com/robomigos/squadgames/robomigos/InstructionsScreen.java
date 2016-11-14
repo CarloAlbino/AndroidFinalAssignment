@@ -9,30 +9,33 @@ import com.framework.Graphics;
 import java.util.List;
 
 /**
- * Created by Carlo Albino on 2016-11-06.
+ * Created by Carlo Albino on 2016-11-13.
  */
 
-public class MainMenuScreen extends Screen {
+public class InstructionsScreen extends Screen {
+
     private static Pixmap background;
-    private static Pixmap playButtonImage;
+    private static Pixmap backButtonNormal;
+    private static Pixmap backButtonPressed;
 
-    private Button playButton;
-    private Vector2i playButtonPos;
+    private Button backButton;
 
-    public MainMenuScreen(Game game)
+    public InstructionsScreen(Game game)
     {
         super(game);
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        playButtonImage = g.newPixmap("ready.png", Graphics.PixmapFormat.ARGB4444);
+        background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);
+        backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
+        backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
-        // Create a button
-        playButton = new Button(g, playButtonImage, playButtonImage, 10, 25, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        // Create buttons
+        backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
     }
 
     @Override
@@ -43,11 +46,20 @@ public class MainMenuScreen extends Screen {
         for (int i = 0; i < len; i++)
         {
             Input.TouchEvent event = touchEvents.get(i);
+            if(event.type == Input.TouchEvent.TOUCH_DOWN)
+            {
+                if(backButton.IsInBounds(event))
+                {
+                    backButton.Pressed(true);
+                }
+            }
+
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
-                if(playButton.IsInBounds(event))
+                if(backButton.IsInBounds(event))
                 {
-                    game.setScreen(new GameScreen(game));
+                    backButton.Pressed(false);
+                    game.setScreen(new TitleScreen(game));
                     return;
                 }
             }
@@ -58,7 +70,8 @@ public class MainMenuScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-        playButton.Draw();
+
+        backButton.Draw();
     }
 
     @Override

@@ -49,7 +49,7 @@ public class GameScreen extends Screen {
         blobXPos = 0;
         blobXPos = 0;
 
-        blob = new Button(g, blobImage, blobXPos, blobYPos, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        blob = new Button(g, blobImage, blobImage, blobXPos, blobYPos, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
     }
 
