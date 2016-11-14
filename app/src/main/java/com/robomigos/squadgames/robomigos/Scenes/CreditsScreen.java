@@ -1,10 +1,11 @@
-package com.robomigos.squadgames.robomigos;
+package com.robomigos.squadgames.robomigos.Scenes;
 
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
+import com.robomigos.squadgames.robomigos.Button;
 
 import java.util.List;
 

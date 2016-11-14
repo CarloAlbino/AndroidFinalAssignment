@@ -1,32 +1,32 @@
-package com.robomigos.squadgames.robomigos;
+package com.robomigos.squadgames.robomigos.Scenes;
 
+import com.framework.Game;
+import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
-import com.framework.Game;
-import com.framework.Graphics;
+import com.robomigos.squadgames.robomigos.Button;
 
 import java.util.List;
 
 /**
- * Created by Carlo Albino on 2016-11-13.
+ * Created by Carlo Albino on 2016-11-14.
  */
 
-public class InstructionsScreen extends Screen {
-
+public class LoseScreen extends Screen {
     private static Pixmap background;
     private static Pixmap backButtonNormal;
     private static Pixmap backButtonPressed;
 
     private Button backButton;
 
-    public InstructionsScreen(Game game)
+    public LoseScreen(Game game)
     {
         super(game);
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);
+        background = g.newPixmap("LoseScreenBackground.png", Graphics.PixmapFormat.RGB565);
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
 
@@ -89,3 +89,4 @@ public class InstructionsScreen extends Screen {
 
     }
 }
+
