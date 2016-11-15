@@ -18,6 +18,13 @@ public class ShopScreen extends Screen {
     private static Pixmap background;
     private static Pixmap backButtonNormal;
     private static Pixmap backButtonPressed;
+    private static Pixmap title;
+    private static Pixmap Apple;
+    private static Pixmap Cake;
+    private static Pixmap currency;
+    private static Pixmap Smoothy;
+    private static Pixmap EnergyDrink;
+
 
     private Button backButton;
 
@@ -30,6 +37,7 @@ public class ShopScreen extends Screen {
         background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
+        title = g.newPixmap("StoreLogo.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
@@ -71,7 +79,7 @@ public class ShopScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-
+        g.drawPixmap(title, 0, 10, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         backButton.Draw();
     }
 
