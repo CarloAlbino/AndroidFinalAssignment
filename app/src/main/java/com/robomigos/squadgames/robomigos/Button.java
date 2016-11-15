@@ -11,29 +11,34 @@ import com.framework.Pixmap;
 public class Button {
 
     private Graphics graphics;
-    private Pixmap image;
+    private Pixmap imageNormal;
+    private Pixmap imagePressed;
     private int left, top, right, bottom;
     private int screenLeft, screenTop, screenRight, screenBottom;
     private int srcX, srcY;
     private int srcWidth, srcHeight;
     private int screenWidth, screenHeight;
     private float bgRatio;
+    private boolean isPressed;
 
-    public Button(Graphics GRAPHICS, Pixmap IMAGE, int LEFT, int TOP, int SRCX, int SRCY, int SCREENW, int SCREENH, float BGRATIO)
+    public Button(Graphics GRAPHICS, Pixmap iNormal, Pixmap iPressed, int LEFT, int TOP, int SRCX, int SRCY, int SCREENW, int SCREENH, float BGRATIO)
     {
         graphics = GRAPHICS;
-        image = IMAGE;
+        imageNormal = iNormal;
+        imagePressed = iPressed;
         left = LEFT;
         top = TOP;
         srcX = SRCX;
         srcY = SRCY;
-        srcWidth = IMAGE.getWidth();
-        srcHeight = IMAGE.getHeight();
+        srcWidth = iNormal.getWidth();
+        srcHeight = iNormal.getHeight();
         screenWidth = SCREENW;
         screenHeight = SCREENH;
         bgRatio = BGRATIO;
         SetBottomRight();
         ConvertToScreenCoord();
+
+        isPressed = false;
     }
 
     // Helper functions
@@ -41,7 +46,7 @@ public class Button {
     public int Right() {return right;}
     public int Top() {return top;}
     public int Bottom() {return bottom;}
-    public Pixmap GetImage() {return image;}
+    public Pixmap GetImage() {return imageNormal;}
     public int GetWidth()
     {
         return screenRight - screenLeft;
@@ -54,7 +59,14 @@ public class Button {
     // Draw the button onto the screen
     public void Draw()
     {
-        graphics.drawPixmap(image, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+        if(isPressed)
+        {
+            graphics.drawPixmap(imagePressed, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+        }
+        else
+        {
+            graphics.drawPixmap(imageNormal, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+        }
     }
 
     // Update the position of the button, this can be used to create a moving button
@@ -75,6 +87,11 @@ public class Button {
             return true;
         else
             return false;
+    }
+
+    public void Pressed(boolean b)
+    {
+        isPressed = b;
     }
 
     // Set the right and bottom bounds of the button in screen percentage units

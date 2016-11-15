@@ -1,10 +1,12 @@
-package com.robomigos.squadgames.robomigos;
+package com.robomigos.squadgames.robomigos.TutorialClasses;
 
 import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
+import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.TutorialClasses.MainMenuScreen;
 
 import java.util.List;
 import java.util.Random;
@@ -49,7 +51,7 @@ public class GameScreen extends Screen {
         blobXPos = 0;
         blobXPos = 0;
 
-        blob = new Button(g, blobImage, blobXPos, blobYPos, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        blob = new Button(g, blobImage, blobImage, blobXPos, blobYPos, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
     }
 
