@@ -60,7 +60,7 @@ public class WinScreen extends Screen {
                 if(backButton.IsInBounds(event))
                 {
                     backButton.Pressed(false);
-                    game.setScreen(new TitleScreen(game));
+                    game.setScreen(new HomeScreen(game));
                     return;
                 }
             }

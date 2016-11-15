@@ -41,6 +41,27 @@ public class Button {
         isPressed = false;
     }
 
+    public Button(Graphics GRAPHICS, Pixmap iNormal, Pixmap iPressed, int LEFT, int TOP, int RIGHT, int bottomAdd, int SRCX, int SRCY, int SCREENW, int SCREENH)
+    {
+        graphics = GRAPHICS;
+        imageNormal = iNormal;
+        imagePressed = iPressed;
+        left = LEFT;
+        top = TOP;
+        right = RIGHT;
+        bottom = top + bottomAdd;
+        srcX = SRCX;
+        srcY = SRCY;
+        srcWidth = iNormal.getWidth();
+        srcHeight = iNormal.getHeight();
+        screenWidth = SCREENW;
+        screenHeight = SCREENH;
+        bgRatio = 1;
+        ConvertToScreenCoord();
+
+        isPressed = false;
+    }
+
     // Helper functions
     public int Left() {return left;}
     public int Right() {return right;}
@@ -66,6 +87,21 @@ public class Button {
         else
         {
             graphics.drawPixmap(imageNormal, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+        }
+    }
+
+    public void Draw(int r, int b)
+    {
+        right = r;
+        bottom = b;
+        ConvertToScreenCoord();
+        if(isPressed)
+        {
+            graphics.drawPixmap(imagePressed, left, top, right, bottom, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight);
+        }
+        else
+        {
+            graphics.drawPixmap(imageNormal, left, top, right, bottom, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight);
         }
     }
 
