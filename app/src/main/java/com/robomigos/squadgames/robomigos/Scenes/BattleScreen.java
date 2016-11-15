@@ -42,10 +42,10 @@ public class BattleScreen extends Screen {
         bgToScreenRatio = (float)g.getHeight() / (float)buttonBackgroundImage.getHeight();
 
         // Create buttons
-        fireButton = new Button(g, fireButtonImage, fireButtonImage, 52, 60, fireButtonImage.getWidth(), fireButtonImage.getHeight(),g.getWidth(), g.getWidth(), bgToScreenRatio);
-        waterButton = new Button(g, waterButtonImage, waterButtonImage, 2, 60, waterButtonImage.getWidth(), waterButtonImage.getHeight(),g.getWidth(), g.getWidth(), bgToScreenRatio);
-        leafButton = new Button(g, leafButtonImage, leafButtonImage, 52, waterButton.Bottom() +10, leafButtonImage.getWidth(), leafButtonImage.getHeight(),g.getWidth(), g.getWidth(), bgToScreenRatio);
-        runButton = new Button(g, runButtonImage, runButtonImage, 52, fireButton.Bottom() + 10, runButtonImage.getWidth(), runButtonImage.getHeight(),g.getWidth(), g.getWidth(), bgToScreenRatio);
+        fireButton = new Button(g, fireButtonImage, fireButtonImage, 52, 64, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        waterButton = new Button(g, waterButtonImage, waterButtonImage, 2, 64, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        leafButton = new Button(g, leafButtonImage, leafButtonImage, 2, waterButton.Bottom() + 3, 0, 0,g.getWidth(), g.getHeight(), bgToScreenRatio);
+        runButton = new Button(g, runButtonImage, runButtonImage, 52, fireButton.Bottom() + 3, 0, 0,g.getWidth(), g.getHeight(), bgToScreenRatio);
     }
 
     @Override
@@ -66,6 +66,7 @@ public class BattleScreen extends Screen {
                 if(runButton.IsInBounds(event))
                 {
                     game.setScreen(new HomeScreen(game));
+                    return;
                 }
             }
         }
