@@ -63,6 +63,24 @@ public class BattleScreen extends Screen {
 
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
+                if(fireButton.IsInBounds(event))
+                {
+                    game.setScreen(new WinScreen(game));
+                    return;
+                }
+
+                if(waterButton.IsInBounds(event))
+                {
+                    game.setScreen(new LoseScreen(game));
+                    return;
+                }
+
+                if(leafButton.IsInBounds(event))
+                {
+                    game.setScreen(new GameOverScreen(game));
+                    return;
+                }
+
                 if(runButton.IsInBounds(event))
                 {
                     game.setScreen(new HomeScreen(game));
