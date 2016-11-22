@@ -1,13 +1,23 @@
 package com.robomigos.squadgames.robomigos;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+
+import com.framework.FileIO;
+import com.framework.impl.AndroidFileIO;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * Created by Carlo Albino on 2016-11-20.
  */
 
-public class DataClass {
+public class DataClass implements FileIO{
 
     private int petChoice;
-    private int petLevel;
+    private int petLevel;       // don't need to save this
     private int petExperience;
     private int money;
     private int unlockedLevel;
@@ -19,10 +29,10 @@ public class DataClass {
     private float happinessLvl;
     private float hungerLvl;
     private int hp;
-    private int maxHP;
-    private int atkPower;
+    private int maxHP;          // don't save this
+    private int atkPower;       // don't save this
 
-    public DataClass()
+    public DataClass(AssetManager assets)
     {
         petChoice = 0; // If after load the petChoice is 0 then it is a new game.
         unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
@@ -39,6 +49,8 @@ public class DataClass {
         numOfItem3 = 0;
         numOfItem4 = 0;
         numOfItem5 = 0;
+        this.assets = assets;
+        this.externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
     }
 
     public int GetPetChoice() {return petChoice;}
@@ -114,7 +126,13 @@ public class DataClass {
         }
     }
     // Pass in negative number to lower the money positive to increase
-    public void AddMoney(int moneyDiff) {money += moneyDiff;}
+    public void AddMoney(int moneyDiff) {
+        money += moneyDiff;
+        if(money < 0)
+        {
+            money = 0;
+        }
+    }
 
     ////////////////////////////
     // Manipulating Inventory //
@@ -168,7 +186,36 @@ public class DataClass {
     public boolean SaveGame()
     {
         // Save the game here
+        String saveString = "";
+        saveString += petChoice + "_";
+        saveString += petExperience + "_";
+        saveString += money + "_";
+        saveString += unlockedLevel + "_";
+        saveString += numOfItem1 + "_";
+        saveString += numOfItem2 + "_";
+        saveString += numOfItem3 + "_";
+        saveString += numOfItem4 + "_";
+        saveString += numOfItem5 + "_";
+        saveString += happinessLvl + "_";
+        saveString += hungerLvl + "_";
+        saveString += hp + "_";
+
+
         return true;
     }
 
+    @Override
+    public InputStream readAsset(String fileName) throws IOException {
+        return null;
+    }
+
+    @Override
+    public InputStream readFile(String fileName) throws IOException {
+        return null;
+    }
+
+    @Override
+    public OutputStream writeFile(String fileName) throws IOException {
+        return null;
+    }
 }
