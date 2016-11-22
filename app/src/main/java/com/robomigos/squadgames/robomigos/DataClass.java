@@ -1,23 +1,24 @@
 package com.robomigos.squadgames.robomigos;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 
 import com.framework.FileIO;
-import com.framework.impl.AndroidFileIO;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 
 /**
  * Created by Carlo Albino on 2016-11-20.
  */
 
-public class DataClass implements FileIO{
+public class DataClass{
 
     private int petChoice;
-    private int petLevel;       // don't need to save this
+    private int petLevel;
     private int petExperience;
     private int money;
     private int unlockedLevel;
@@ -29,10 +30,10 @@ public class DataClass implements FileIO{
     private float happinessLvl;
     private float hungerLvl;
     private int hp;
-    private int maxHP;          // don't save this
-    private int atkPower;       // don't save this
+    private int maxHP;
+    private int atkPower;
 
-    public DataClass(AssetManager assets)
+    public DataClass()
     {
         petChoice = 0; // If after load the petChoice is 0 then it is a new game.
         unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
@@ -49,8 +50,6 @@ public class DataClass implements FileIO{
         numOfItem3 = 0;
         numOfItem4 = 0;
         numOfItem5 = 0;
-        this.assets = assets;
-        this.externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
     }
 
     public int GetPetChoice() {return petChoice;}
@@ -177,45 +176,72 @@ public class DataClass implements FileIO{
     ////////////////////////////////
     // Manipulating the Save File //
     ////////////////////////////////
-    public boolean LoadSave()
+    // Call LoadSave(game.getFileIO()) to load, should only load at the beginning of the game.
+    public void LoadSave(FileIO saveFile)
     {
         // Load a save file from a text doc
-        return true;
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(saveFile.readFile(".robomigos")));
+            petChoice = Integer.parseInt(in.readLine());
+            petExperience = Integer.parseInt(in.readLine());
+            petLevel = Integer.parseInt(in.readLine());
+            money = Integer.parseInt(in.readLine());
+            unlockedLevel = Integer.parseInt(in.readLine());
+            numOfItem1 = Integer.parseInt(in.readLine());
+            numOfItem2 = Integer.parseInt(in.readLine());
+            numOfItem3 = Integer.parseInt(in.readLine());
+            numOfItem4 = Integer.parseInt(in.readLine());
+            numOfItem5 = Integer.parseInt(in.readLine());
+            happinessLvl = Float.parseFloat(in.readLine());
+            hungerLvl = Float.parseFloat(in.readLine());
+            hp = Integer.parseInt(in.readLine());
+            maxHP = Integer.parseInt(in.readLine());
+            atkPower = Integer.parseInt(in.readLine());
+        } catch (IOException e) {
+            // :( It's ok we have defaults
+        } catch (NumberFormatException e) {
+            // :/ It's ok, defaults save our day
+        } finally {
+            try {
+                if (in != null)
+                    in.close();
+            } catch (IOException e) {
+            }
+        }
     }
 
-    public boolean SaveGame()
+    // Call LoadSave(game.getFileIO()) to load, should be called when leaving inventory/shop,
+    // when leaving home, when leaving battle, when battle complete (lose or win), when release,
+    // on level up.
+    public void SaveGame(FileIO saveFile)
     {
         // Save the game here
-        String saveString = "";
-        saveString += petChoice + "_";
-        saveString += petExperience + "_";
-        saveString += money + "_";
-        saveString += unlockedLevel + "_";
-        saveString += numOfItem1 + "_";
-        saveString += numOfItem2 + "_";
-        saveString += numOfItem3 + "_";
-        saveString += numOfItem4 + "_";
-        saveString += numOfItem5 + "_";
-        saveString += happinessLvl + "_";
-        saveString += hungerLvl + "_";
-        saveString += hp + "_";
-
-
-        return true;
-    }
-
-    @Override
-    public InputStream readAsset(String fileName) throws IOException {
-        return null;
-    }
-
-    @Override
-    public InputStream readFile(String fileName) throws IOException {
-        return null;
-    }
-
-    @Override
-    public OutputStream writeFile(String fileName) throws IOException {
-        return null;
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(saveFile.writeFile(".robomigos")));
+            out.write(Integer.toString(petChoice));
+            out.write(Integer.toString(petExperience));
+            out.write(Integer.toString(petLevel));
+            out.write(Integer.toString(money));
+            out.write(Integer.toString(unlockedLevel));
+            out.write(Integer.toString(numOfItem1));
+            out.write(Integer.toString(numOfItem2));
+            out.write(Integer.toString(numOfItem3));
+            out.write(Integer.toString(numOfItem4));
+            out.write(Integer.toString(numOfItem5));
+            out.write(Float.toString(happinessLvl));
+            out.write(Float.toString(hungerLvl));
+            out.write(Integer.toString(hp));
+            out.write(Integer.toString(maxHP));
+            out.write(Integer.toString(atkPower));
+        } catch (IOException e) {
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+            }
+        }
     }
 }

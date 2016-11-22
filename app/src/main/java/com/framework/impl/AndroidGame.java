@@ -15,6 +15,7 @@ import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Screen;
+import com.robomigos.squadgames.robomigos.DataClass;
 
 public abstract class AndroidGame extends Activity implements Game {
     AndroidFastRenderView renderView;
@@ -23,6 +24,7 @@ public abstract class AndroidGame extends Activity implements Game {
     Input input;
     FileIO fileIO;
     Screen screen;
+    DataClass data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public abstract class AndroidGame extends Activity implements Game {
         audio = new AndroidAudio(this);
         input = new AndroidInput(this, renderView, scaleX, scaleY);
         screen = getStartScreen();
+        data = new DataClass();
         setContentView(renderView);
     }
 
@@ -69,6 +72,9 @@ public abstract class AndroidGame extends Activity implements Game {
         if (isFinishing())
             screen.dispose();
     }
+
+    @Override
+    public DataClass getData() { return data; }
 
     @Override
     public Input getInput() {
