@@ -71,7 +71,7 @@ public class ChooseBattleScreen extends Screen {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_DOWN)
             {
-                if(backButton.IsInBounds(event))
+                if (backButton.IsInBounds(event))
                 {
                     backButton.Pressed(true);
                 }
@@ -85,10 +85,35 @@ public class ChooseBattleScreen extends Screen {
                     return;
                 }
 
+                if(easyButton.IsInBounds(event))
+                {
+                    game.setScreen(new BattleScreen(game));
+                    return;
+                }
+
+                if(mediumButton.IsInBounds(event))
+                {
+                    game.setScreen(new BattleScreen(game));
+                    return;
+                }
+
+                if(hardButton.IsInBounds(event))
+                {
+                    game.setScreen(new BattleScreen(game));
+                    return;
+                }
+
+                if(expertButton.IsInBounds(event))
+                {
+                    game.setScreen(new BattleScreen(game));
+                    return;
+                }
+
+
                 if(backButton.IsInBounds(event))
                 {
                     backButton.Pressed(false);
-                    game.setScreen(new TitleScreen(game));
+                    game.setScreen(new HomeScreen(game));
                     return;
                 }
             }
