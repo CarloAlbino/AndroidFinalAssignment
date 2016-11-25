@@ -1,10 +1,21 @@
 package com.robomigos.squadgames.robomigos;
 
+import android.app.Activity;
+
+import com.framework.FileIO;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+
 /**
  * Created by Carlo Albino on 2016-11-20.
  */
 
-public class DataClass {
+public class DataClass{
 
     private int petChoice;
     private int petLevel;
@@ -114,7 +125,13 @@ public class DataClass {
         }
     }
     // Pass in negative number to lower the money positive to increase
-    public void AddMoney(int moneyDiff) {money += moneyDiff;}
+    public void AddMoney(int moneyDiff) {
+        money += moneyDiff;
+        if(money < 0)
+        {
+            money = 0;
+        }
+    }
 
     ////////////////////////////
     // Manipulating Inventory //
@@ -159,16 +176,72 @@ public class DataClass {
     ////////////////////////////////
     // Manipulating the Save File //
     ////////////////////////////////
-    public boolean LoadSave()
+    // Call LoadSave(game.getFileIO()) to load, should only load at the beginning of the game.
+    public void LoadSave(FileIO saveFile)
     {
         // Load a save file from a text doc
-        return true;
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(saveFile.readFile(".robomigos")));
+            petChoice = Integer.parseInt(in.readLine());
+            petExperience = Integer.parseInt(in.readLine());
+            petLevel = Integer.parseInt(in.readLine());
+            money = Integer.parseInt(in.readLine());
+            unlockedLevel = Integer.parseInt(in.readLine());
+            numOfItem1 = Integer.parseInt(in.readLine());
+            numOfItem2 = Integer.parseInt(in.readLine());
+            numOfItem3 = Integer.parseInt(in.readLine());
+            numOfItem4 = Integer.parseInt(in.readLine());
+            numOfItem5 = Integer.parseInt(in.readLine());
+            happinessLvl = Float.parseFloat(in.readLine());
+            hungerLvl = Float.parseFloat(in.readLine());
+            hp = Integer.parseInt(in.readLine());
+            maxHP = Integer.parseInt(in.readLine());
+            atkPower = Integer.parseInt(in.readLine());
+        } catch (IOException e) {
+            // :( It's ok we have defaults
+        } catch (NumberFormatException e) {
+            // :/ It's ok, defaults save our day
+        } finally {
+            try {
+                if (in != null)
+                    in.close();
+            } catch (IOException e) {
+            }
+        }
     }
 
-    public boolean SaveGame()
+    // Call LoadSave(game.getFileIO()) to load, should be called when leaving inventory/shop,
+    // when leaving home, when leaving battle, when battle complete (lose or win), when release,
+    // on level up.
+    public void SaveGame(FileIO saveFile)
     {
         // Save the game here
-        return true;
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(saveFile.writeFile(".robomigos")));
+            out.write(Integer.toString(petChoice));
+            out.write(Integer.toString(petExperience));
+            out.write(Integer.toString(petLevel));
+            out.write(Integer.toString(money));
+            out.write(Integer.toString(unlockedLevel));
+            out.write(Integer.toString(numOfItem1));
+            out.write(Integer.toString(numOfItem2));
+            out.write(Integer.toString(numOfItem3));
+            out.write(Integer.toString(numOfItem4));
+            out.write(Integer.toString(numOfItem5));
+            out.write(Float.toString(happinessLvl));
+            out.write(Float.toString(hungerLvl));
+            out.write(Integer.toString(hp));
+            out.write(Integer.toString(maxHP));
+            out.write(Integer.toString(atkPower));
+        } catch (IOException e) {
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+            }
+        }
     }
-
 }
