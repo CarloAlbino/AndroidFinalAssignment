@@ -152,6 +152,24 @@ public class HomeScreen extends Screen {
         g.drawPixmap(dojoImage, 0, 0, 100, 100, 0, 0, dojoImage.getWidth(), dojoImage.getHeight(), g.getWidth(), g.getHeight());
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
 
+        //Health
+        g.drawPixmap(backBarBorderImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(healthBarImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        //Happiness
+        g.drawPixmap(backBarBorderImage, 12, 10, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(happinessBarImage, 12, 10, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        //Hunger
+        g.drawPixmap(backBarBorderImage, 12, 16, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(hungerBarImage, 12, 16, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        //level box
+        g.drawPixmap(levelBoxImage, 73, 11, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        //Emotions
+        g.drawPixmap(happyFaceImage, 60, 6, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
         //Buttons being drawed
         battleButton.Draw();
         quitButton.Draw();
