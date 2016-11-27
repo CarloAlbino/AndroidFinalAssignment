@@ -119,7 +119,7 @@ public class DataClass{
         }
     }
     // Used for potions and during battles
-    public void AddHP(float hpDiff) {
+    public void AddHP(int hpDiff) {
         hp += hpDiff;
         if(hp > maxHP)
         {
