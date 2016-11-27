@@ -70,6 +70,27 @@ public class ChooseAPetScreen extends Screen {
                     game.setScreen(new TitleScreen(game));
                     return;
                 }
+                if(char1Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(1);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
+                if(char2Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(2);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
+                if(char3Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(3);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
             }
         }
     }
