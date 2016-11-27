@@ -6,6 +6,7 @@ import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
 import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.NumberDisplay;
 
 import java.util.List;
 
@@ -41,6 +42,10 @@ public class HomeScreen extends Screen {
     public static Pixmap topUIImage;
     public static Pixmap bottomUIImage;
     public static Pixmap homeBackGroundImage;
+
+    //Level number
+    public static Pixmap font;
+    public NumberDisplay levelDisplay;
 
 
 //Buttons
@@ -81,6 +86,9 @@ public class HomeScreen extends Screen {
         shopButtonImage =g.newPixmap("Shop.png",Graphics.PixmapFormat.ARGB4444);
         inventoryButtonImage =g.newPixmap("Inventory.png",Graphics.PixmapFormat.ARGB4444);
 
+        // Number font
+        font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
+
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
@@ -89,6 +97,9 @@ public class HomeScreen extends Screen {
          quitButton = new Button(g, quitButtonImage, quitButtonImage, 15, 90, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         inventoryButton = new Button(g, inventoryButtonImage, inventoryButtonImage, 60, 90, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         shopButton = new Button(g, shopButtonImage, shopButtonImage, 60, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        // Create number display
+        levelDisplay = new NumberDisplay(g, font, 74, 12, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
     }
 
     @Override
@@ -166,6 +177,7 @@ public class HomeScreen extends Screen {
 
         //level box
         g.drawPixmap(levelBoxImage, 73, 11, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        levelDisplay.Draw(Integer.toString(game.getData().GetPetLevel()), 3);
 
         //Emotions
         g.drawPixmap(happyFaceImage, 60, 6, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);

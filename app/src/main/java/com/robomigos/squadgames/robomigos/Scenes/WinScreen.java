@@ -37,6 +37,8 @@ public class WinScreen extends Screen {
         // Create buttons
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
+        game.getData().SetPetExperience(1000); // For testing only
+        game.getData().SaveGame(game.getFileIO());
     }
 
     @Override
