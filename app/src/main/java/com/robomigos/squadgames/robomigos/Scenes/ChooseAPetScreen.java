@@ -37,20 +37,20 @@ public class ChooseAPetScreen extends Screen {
 
         // Load the bitmaps
         background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);   // RGB565 non - transparent
-        titleImage = g.newPixmap("RobomigosLogo.png", Graphics.PixmapFormat.ARGB4444);        // ARGB4444 transparent
-        char1ButtonImage = g.newPixmap("StartButton.png", Graphics.PixmapFormat.ARGB4444);
-        char2ButtonImage = g.newPixmap("HowToPlayButton.png", Graphics.PixmapFormat.ARGB4444);
-        char3ButtonImage = g.newPixmap("CreditsButton.png", Graphics.PixmapFormat.ARGB4444);
-        backButtonNormal = g.newPixmap("BackButtonNormal.png", Graphics.PixmapFormat.ARGB4444);
+        titleImage = g.newPixmap("ChooseRobotTitle.png", Graphics.PixmapFormat.ARGB4444);        // ARGB4444 transparent
+        char1ButtonImage = g.newPixmap("CyboButton.png", Graphics.PixmapFormat.ARGB4444);
+        char2ButtonImage = g.newPixmap("RoboButton.png", Graphics.PixmapFormat.ARGB4444);
+        char3ButtonImage = g.newPixmap("DroiButton.png", Graphics.PixmapFormat.ARGB4444);
+        backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight(); // Have this line in each screen constructor after background is set
 
         // Create buttons
-        char1Button = new Button(g, char1ButtonImage, char1ButtonImage, 33, 50, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        char2Button = new Button(g, char2ButtonImage, char2ButtonImage, 33, 60, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        char3Button = new Button(g, char3ButtonImage, char3ButtonImage, 33, 70, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        char1Button = new Button(g, char1ButtonImage, char1ButtonImage, 15, 33, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        char2Button = new Button(g, char2ButtonImage, char2ButtonImage, 15, char1Button.Bottom() + 3, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        char3Button = new Button(g, char3ButtonImage, char3ButtonImage, 15, char2Button.Bottom() + 3, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
     }
 
@@ -65,7 +65,32 @@ public class ChooseAPetScreen extends Screen {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
-
+                if(backButton.IsInBounds(event))
+                {
+                    game.setScreen(new TitleScreen(game));
+                    return;
+                }
+                if(char1Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(1);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
+                if(char2Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(2);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
+                if(char3Button.IsInBounds(event))
+                {
+                    game.getData().SetPetChoice(3);
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
+                }
             }
         }
     }
@@ -74,7 +99,7 @@ public class ChooseAPetScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-        g.drawPixmap(titleImage, 0, 7, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(titleImage, 15, 7, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         char1Button.Draw();
         char2Button.Draw();
         char3Button.Draw();

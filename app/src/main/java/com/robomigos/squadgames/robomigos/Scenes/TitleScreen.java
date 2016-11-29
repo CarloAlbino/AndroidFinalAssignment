@@ -63,7 +63,15 @@ public class TitleScreen extends Screen {
             {
                 if(startButton.IsInBounds(event))
                 {
-                    game.setScreen(new ShopScreen(game));
+                    game.getData().LoadSave(game.getFileIO()); //  Loading the save file
+                    if(game.getData().GetPetChoice() > 0)   // Pet already been chosen
+                    {
+                        game.setScreen(new HomeScreen(game));
+                    }
+                    else                                    // Pet not yet chosen
+                    {
+                        game.setScreen(new ChooseAPetScreen(game));
+                    }
                     return;
                 }
 

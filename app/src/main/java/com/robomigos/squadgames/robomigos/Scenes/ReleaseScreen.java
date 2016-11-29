@@ -51,10 +51,16 @@ public class ReleaseScreen extends Screen {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
+                if(yesButton.IsInBounds(event))
+                {
+                    game.setScreen(new TitleScreen(game));
+                    return;
+                }
+
                 if(noButton.IsInBounds(event))
                 {
                     // Do stuff
-                    game.setScreen(new TitleScreen(game));
+                    game.setScreen(new ChooseBattleScreen(game));
                     return;
                 }
 

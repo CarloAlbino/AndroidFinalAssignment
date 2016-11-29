@@ -10,31 +10,31 @@ import com.framework.Pixmap;
 
 public class Button {
 
-    private Graphics graphics;
-    private Pixmap imageNormal;
-    private Pixmap imagePressed;
-    private int left, top, right, bottom;
-    private int screenLeft, screenTop, screenRight, screenBottom;
-    private int srcX, srcY;
-    private int srcWidth, srcHeight;
-    private int screenWidth, screenHeight;
-    private float bgRatio;
-    private boolean isPressed;
+    private Graphics graphics;          // Reference to graphics
+    private Pixmap imageNormal;         // Image of the button in a normal state
+    private Pixmap imagePressed;        // Image of the button in a pressed state
+    private int left, top, right, bottom;   // The bounds of the button in screen percentage
+    private int screenLeft, screenTop, screenRight, screenBottom;   // The bounds of the button in pixels
+    private int sourceX, sourceY;             // The start point of the button's image on the PNG (used for sprite sheets)
+    private int sourceWidth, sourceHeight;    // The width and height of the image on the PNG
+    private int screenWidth, screenHeight;  // Screen dimensions
+    private float bgRatio;              // The background to screen ratio
+    private boolean isPressed;          // Is the button pressed?
 
-    public Button(Graphics GRAPHICS, Pixmap iNormal, Pixmap iPressed, int LEFT, int TOP, int SRCX, int SRCY, int SCREENW, int SCREENH, float BGRATIO)
+    public Button(Graphics g, Pixmap normal, Pixmap pressed, int l, int t, int srcX, int srcY, int screenW, int screenH, float ratio)
     {
-        graphics = GRAPHICS;
-        imageNormal = iNormal;
-        imagePressed = iPressed;
-        left = LEFT;
-        top = TOP;
-        srcX = SRCX;
-        srcY = SRCY;
-        srcWidth = iNormal.getWidth();
-        srcHeight = iNormal.getHeight();
-        screenWidth = SCREENW;
-        screenHeight = SCREENH;
-        bgRatio = BGRATIO;
+        graphics = g;
+        imageNormal = normal;
+        imagePressed = pressed;
+        left = l;
+        top = t;
+        sourceX = srcX;
+        sourceY = srcY;
+        sourceWidth = normal.getWidth();
+        sourceHeight = normal.getHeight();
+        screenWidth = screenW;
+        screenHeight = screenH;
+        bgRatio = ratio;
         SetBottomRight();
         ConvertToScreenCoord();
 
@@ -59,13 +59,13 @@ public class Button {
     // Draw the button onto the screen
     public void Draw()
     {
-        if(isPressed)
+        if(isPressed)   // If the button is held down
         {
-            graphics.drawPixmap(imagePressed, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+            graphics.drawPixmap(imagePressed, left, top, sourceX, sourceY, sourceWidth, sourceHeight, screenWidth, screenHeight, bgRatio);
         }
-        else
+        else            // If the button is normal
         {
-            graphics.drawPixmap(imageNormal, left, top, srcX, srcY, srcWidth, srcHeight, screenWidth, screenHeight, bgRatio);
+            graphics.drawPixmap(imageNormal, left, top, sourceX, sourceY, sourceWidth, sourceHeight, screenWidth, screenHeight, bgRatio);
         }
     }
 
@@ -89,6 +89,7 @@ public class Button {
             return false;
     }
 
+    // Pass in if the button is pressed or not
     public void Pressed(boolean b)
     {
         isPressed = b;
@@ -97,8 +98,8 @@ public class Button {
     // Set the right and bottom bounds of the button in screen percentage units
     private void SetBottomRight()
     {
-        right = left + (int)((float)(100 * srcWidth/ screenWidth) * bgRatio);
-        bottom = top + (int)((float)(100 * srcHeight/ screenHeight) * bgRatio);
+        right = left + (int)((float)(100 * sourceWidth / screenWidth) * bgRatio);
+        bottom = top + (int)((float)(100 * sourceHeight / screenHeight) * bgRatio);
     }
 
     // Convert the screen percentage units of the bounds to screen coordinates
