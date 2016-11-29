@@ -87,6 +87,16 @@ public class DataClass{
         // Level Up system goes here.
         // Max HP raising goes here too.
         // AtkPower gets set here as well.
+
+        while(petExperience > 900)
+        {
+            petLevel++;
+            maxHP += 3;
+            hp += 3;
+            atkPower += 2;
+            petExperience = petExperience - 900;
+
+        }
     }
     // Home and battle affects the pets happiness
     public void AddHappiness(float happinessDiff) {
@@ -95,6 +105,7 @@ public class DataClass{
         {
             happinessLvl = 1.0f;
         }
+
         if(happinessLvl < 0.0f)
         {
             happinessLvl = 0.0f;
@@ -113,7 +124,7 @@ public class DataClass{
         }
     }
     // Used for potions and during battles
-    public void AddHP(float hpDiff) {
+    public void AddHP(int hpDiff) {
         hp += hpDiff;
         if(hp > maxHP)
         {

@@ -16,6 +16,7 @@ public interface Graphics
     public void drawPixmap(Pixmap pixmap, int left, int top, int srcX, int srcY, int srcWidth, int srcHeight, int screenW, int screenH, float bgRatio);
     public void drawPixmap(Pixmap pixmap, int left, int top, int right, int bottom, int srcX, int srcY, int srcWidth, int srcHeight, int screenW, int screenH);
     public void drawPixmap(Pixmap pixmap, int x, int y);
+    public void drawNumber(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight, int multiplier);
     public int getWidth();
     public int getHeight();
 }
