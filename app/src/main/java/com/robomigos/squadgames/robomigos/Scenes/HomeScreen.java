@@ -48,6 +48,13 @@ public class HomeScreen extends Screen {
     public NumberDisplay levelDisplay;
 
 
+    //Robot Images
+    public static Pixmap cybordBird;
+    public static Pixmap robotMan;
+    public static Pixmap robotFrog;
+    public static Pixmap  robotPoop;
+
+
 //Buttons
 
     public Button battleButton;
@@ -63,7 +70,6 @@ public class HomeScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-
         backBarBorderImage =   g.newPixmap("Healthbar_Border.png", Graphics.PixmapFormat.RGB565);
 
         //Bar Images
@@ -85,6 +91,14 @@ public class HomeScreen extends Screen {
         quitButtonImage = g.newPixmap("Quit.png",Graphics.PixmapFormat.ARGB4444);
         shopButtonImage =g.newPixmap("Shop.png",Graphics.PixmapFormat.ARGB4444);
         inventoryButtonImage =g.newPixmap("Inventory.png",Graphics.PixmapFormat.ARGB4444);
+
+
+        //Robot references to pixmap
+        cybordBird = g.newPixmap("cyborgbird.png",Graphics.PixmapFormat.RGB565);
+        robotMan = g.newPixmap("robotman.png",Graphics.PixmapFormat.RGB565);
+        robotFrog = g.newPixmap("frog.png",Graphics.PixmapFormat.RGB565);
+        robotPoop = g.newPixmap("poop.png",Graphics.PixmapFormat.RGB565);
+
 
         // Number font
         font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
