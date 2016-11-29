@@ -15,6 +15,7 @@ import java.util.List;
 
 public class BattleScreen extends Screen {
 
+    public static Pixmap battleEnvironmentImage;
     public static Pixmap buttonBackgroundImage;
     public static Pixmap fireButtonImage;
     public static Pixmap leafButtonImage;
@@ -32,6 +33,7 @@ public class BattleScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
+        battleEnvironmentImage = g.newPixmap("battleenvironment.png", Graphics.PixmapFormat.ARGB4444);
         buttonBackgroundImage = g.newPixmap("BattleBackground.png", Graphics.PixmapFormat.ARGB4444);
         fireButtonImage = g.newPixmap("FireButton.png", Graphics.PixmapFormat.ARGB4444);
         leafButtonImage = g.newPixmap("LeafButton.png", Graphics.PixmapFormat.ARGB4444);
@@ -93,6 +95,7 @@ public class BattleScreen extends Screen {
     @Override
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
+        g.drawPixmap(battleEnvironmentImage, 0, 0, 0, 0, battleEnvironmentImage.getWidth(), battleEnvironmentImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(buttonBackgroundImage, 0, 0, 100, 100, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight());
 
         fireButton.Draw();
