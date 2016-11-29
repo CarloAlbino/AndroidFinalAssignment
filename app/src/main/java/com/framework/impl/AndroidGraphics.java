@@ -153,6 +153,21 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
+    public void drawNumber(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight, int multiplier) {
+        srcRect.left = srcX;
+        srcRect.top = srcY;
+        srcRect.right = srcX  + srcWidth - 1;
+        srcRect.bottom = srcY + srcHeight - 1;
+
+        dstRect.left = x;
+        dstRect.top = y;
+        dstRect.right = x + ((srcWidth - 1) * multiplier);
+        dstRect.bottom = y + ((srcHeight - 1) * multiplier);
+
+        canvas.drawBitmap(((AndroidPixmap) pixmap).bitmap, srcRect, dstRect, null);
+    }
+
+    @Override
     public int getWidth() {
         return frameBuffer.getWidth();
     }
