@@ -14,7 +14,7 @@ public class AnimatedPixmap extends UIElement{
     private int frameWidth;
     private int frameHeight;
 
-    private float currentFrame;
+    private int currentFrame;
     private float currentTime;
     private int numOfFrames;
 
@@ -55,23 +55,24 @@ public class AnimatedPixmap extends UIElement{
         int numOfFramesX = sourceWidth / frameWidth;
         int numOfFramesY = sourceHeight / frameHeight;
 
-        // Set the coordinates in the sprite sheet for the current frame.
+        // Get the coordinates for the current frame of the animation.
         for(int iteratorX = 0; iteratorX < numOfFramesX; iteratorX++)
         {
+            curFrameX = frameWidth * iteratorX;
             for(int iteratorY = 0; iteratorY < numOfFramesY; iteratorY++)
             {
-                if(iteratorX * (iteratorY + 1) == currentFrame)
+                if((iteratorX * numOfFramesX + iteratorY) == currentFrame)
                 {
-                    curFrameX = frameWidth * iteratorX;
                     curFrameY = frameHeight * iteratorY;
                     break;
                 }
             }
         }
-
+        // Draw the new frame.
         graphics.drawPixmap(spriteSheet, left, top, curFrameX, curFrameY, frameWidth, frameHeight, screenWidth, screenHeight, bgRatio);
     }
 
+    // Check to see if a frame has passed and at which frame the animation is currently on.
     private void CountFrames(float deltaTime)
     {
         currentTime += deltaTime;
@@ -85,7 +86,5 @@ public class AnimatedPixmap extends UIElement{
                 currentFrame = 0;
             }
         }
-
-        System.out.println("Current Time: " + currentTime + ". Current Frame: " + currentFrame + ". 1.0f/fps: " + 1.0f/(float)fps + ".");
     }
 }
