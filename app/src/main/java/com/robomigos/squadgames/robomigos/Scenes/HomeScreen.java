@@ -196,6 +196,9 @@ public class HomeScreen extends Screen {
         //Emotions
         g.drawPixmap(happyFaceImage, 60, 6, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
+        //Character
+        g.drawPixmap(cybordBird, 40, 35, 0, 0, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
         //Buttons being drawed
         battleButton.Draw();
         quitButton.Draw();
