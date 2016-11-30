@@ -5,6 +5,7 @@ import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
+import com.robomigos.squadgames.robomigos.AnimatedPixmap;
 import com.robomigos.squadgames.robomigos.Button;
 import com.robomigos.squadgames.robomigos.DisplayBar;
 import com.robomigos.squadgames.robomigos.NumberDisplay;
@@ -64,6 +65,9 @@ public class HomeScreen extends Screen {
     //Bars
     public DisplayBar healthBar;
 
+    // Animated Character
+    public AnimatedPixmap character;
+
 
 
     public HomeScreen(Game game)
@@ -119,6 +123,9 @@ public class HomeScreen extends Screen {
 
         // Create number display
         levelDisplay = new NumberDisplay(g, font, 74, 12, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        // Draw animated character
+        character = new AnimatedPixmap(g, cybordBird, 40, 35, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
     }
 
     @Override
@@ -202,9 +209,10 @@ public class HomeScreen extends Screen {
         g.drawPixmap(happyFaceImage, 60, 6, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         //Character
-        g.drawPixmap(cybordBird, 40, 35, 0, 0, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(cybordBird, 40, 35, 0, 0, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        character.Draw(deltaTime);
 
-        //Buttons being drawed
+        //Buttons being drawn
         battleButton.Draw();
         quitButton.Draw();
         inventoryButton.Draw();
