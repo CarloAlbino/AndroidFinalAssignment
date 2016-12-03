@@ -154,8 +154,10 @@ public class HomeScreen extends Screen {
             {
                 if(battleButton.IsInBounds(event))
                 {
-                    game.setScreen(new ChooseBattleScreen(game));
-                    return;
+                    if(game.getData().GetHP() > 0) {
+                        game.setScreen(new ChooseBattleScreen(game));
+                        return;
+                    }
                 }
             }
             //Shop screen
