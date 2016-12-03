@@ -87,25 +87,25 @@ public class ChooseBattleScreen extends Screen {
 
                 if(easyButton.IsInBounds(event))
                 {
-                    game.setScreen(new BattleScreen(game));
+                    game.setScreen(new BattleScreen(game, 1));
                     return;
                 }
 
                 if(mediumButton.IsInBounds(event))
                 {
-                    game.setScreen(new BattleScreen(game));
+                    game.setScreen(new BattleScreen(game, 2));
                     return;
                 }
 
                 if(hardButton.IsInBounds(event))
                 {
-                    game.setScreen(new BattleScreen(game));
+                    game.setScreen(new BattleScreen(game, 3));
                     return;
                 }
 
                 if(expertButton.IsInBounds(event))
                 {
-                    game.setScreen(new BattleScreen(game));
+                    game.setScreen(new BattleScreen(game, 4));
                     return;
                 }
 
