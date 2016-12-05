@@ -104,7 +104,11 @@ public abstract class AndroidGame extends Activity implements Game {
         this.screen.pause();
         this.screen.dispose();
         screen.resume();
-        screen.update(0);
+        try {
+            screen.update(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.screen = screen;
     }
     
