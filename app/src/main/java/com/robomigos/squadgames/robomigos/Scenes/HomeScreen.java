@@ -24,6 +24,7 @@ public class HomeScreen extends Screen {
     public static Pixmap quitButtonImage;
     public static Pixmap shopButtonImage;
     public static Pixmap inventoryButtonImage;
+    public static Pixmap poopImage;
 
     //Mood Images
     public static Pixmap angryFaceImage;
@@ -53,7 +54,7 @@ public class HomeScreen extends Screen {
     public static Pixmap cybordBird;
     public static Pixmap robotMan;
     public static Pixmap robotFrog;
-    public static Pixmap  robotPoop;
+   // public static Pixmap  robotPoop;
 
 
     //Buttons
@@ -61,6 +62,8 @@ public class HomeScreen extends Screen {
     public Button shopButton;
     public Button inventoryButton;
     public Button quitButton;
+    public Button robotPoop;
+
 
     //Bars
     public DisplayBar healthBar;
@@ -97,13 +100,14 @@ public class HomeScreen extends Screen {
         quitButtonImage = g.newPixmap("Quit.png",Graphics.PixmapFormat.ARGB4444);
         shopButtonImage =g.newPixmap("Shop.png",Graphics.PixmapFormat.ARGB4444);
         inventoryButtonImage =g.newPixmap("Inventory.png",Graphics.PixmapFormat.ARGB4444);
+        poopImage = g.newPixmap("poop.png", Graphics.PixmapFormat.ARGB4444);
 
 
         //Robot references to pixmap
         cybordBird = g.newPixmap("cyborgbird.png",Graphics.PixmapFormat.RGB565);
         robotMan = g.newPixmap("robotman.png",Graphics.PixmapFormat.RGB565);
         robotFrog = g.newPixmap("frog.png",Graphics.PixmapFormat.RGB565);
-        robotPoop = g.newPixmap("poop.png",Graphics.PixmapFormat.RGB565);
+       // robotPoop = g.newPixmap("poop.png",Graphics.PixmapFormat.RGB565);
 
         // Number font
         font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
@@ -117,6 +121,9 @@ public class HomeScreen extends Screen {
         quitButton = new Button(g, quitButtonImage, quitButtonImage, 5, 88, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         inventoryButton = new Button(g, inventoryButtonImage, inventoryButtonImage, 58, 87, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         shopButton = new Button(g, shopButtonImage, shopButtonImage, 58, 72, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+       //Poop Button
+        robotPoop = new Button(g, poopImage, poopImage, 65, 45, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Create Display Bars
         healthBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 12, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
@@ -183,7 +190,10 @@ public class HomeScreen extends Screen {
                 }
             }
         }
-        healthBar.fillAmount -= deltaTime; // For testing the health bar
+       //The health Bar
+       // healthBar.fillAmount = deltaTime; // For testing the health bar
+
+
     }
 
     @Override
@@ -223,6 +233,7 @@ public class HomeScreen extends Screen {
         quitButton.Draw();
         inventoryButton.Draw();
         shopButton.Draw();
+        //robotPoop.Draw();
 
     }
 
