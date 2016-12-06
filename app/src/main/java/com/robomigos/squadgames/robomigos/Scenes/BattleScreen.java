@@ -1,5 +1,8 @@
 package com.robomigos.squadgames.robomigos.Scenes;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
@@ -45,12 +48,20 @@ public class BattleScreen extends Screen {
     public Enemy[] enemies;
     public int currentLevel;
 
+    // Battle control
     private int currentEnemy;
     private float waitTime;
     private float currentTimer;
+    private boolean step1;
+    private boolean step2;
+    boolean attackChosen;
 
     public static Pixmap barBackground;
     public static Pixmap barForeground;
+
+    public static Pixmap[] attackIcons;
+    private int currentPlayerAttack;
+    private int currentEnemyAttack;
 
     public DisplayBar playerHealth;
     public DisplayBar enemyHealth;
@@ -61,12 +72,12 @@ public class BattleScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        battleEnvironmentImage = g.newPixmap("battleenvironment.png", Graphics.PixmapFormat.ARGB4444);
-        buttonBackgroundImage = g.newPixmap("BattleBackground.png", Graphics.PixmapFormat.ARGB4444);
-        fireButtonImage = g.newPixmap("FireButton.png", Graphics.PixmapFormat.ARGB4444);
-        leafButtonImage = g.newPixmap("LeafButton.png", Graphics.PixmapFormat.ARGB4444);
-        waterButtonImage = g.newPixmap("WaterButton.png", Graphics.PixmapFormat.ARGB4444);
-        runButtonImage = g.newPixmap("RunButton.png", Graphics.PixmapFormat.ARGB4444);
+        battleEnvironmentImage = g.newPixmap("BattleScene/battleenvironment.png", Graphics.PixmapFormat.ARGB4444);
+        buttonBackgroundImage = g.newPixmap("BattleScene/BattleBackground.png", Graphics.PixmapFormat.ARGB4444);
+        fireButtonImage = g.newPixmap("BattleScene/FireButton.png", Graphics.PixmapFormat.ARGB4444);
+        leafButtonImage = g.newPixmap("BattleScene/LeafButton.png", Graphics.PixmapFormat.ARGB4444);
+        waterButtonImage = g.newPixmap("BattleScene/WaterButton.png", Graphics.PixmapFormat.ARGB4444);
+        runButtonImage = g.newPixmap("BattleScene/RunButton.png", Graphics.PixmapFormat.ARGB4444);
 
         // Load the player bitmaps
         petImage = new Pixmap[3];
@@ -75,14 +86,23 @@ public class BattleScreen extends Screen {
         petImage[2] = g.newPixmap("cyborgbird.png", Graphics.PixmapFormat.ARGB4444);
 
         // Load the enemy bitmaps
-        smlEnemy1 = g.newPixmap("bluecube.png", Graphics.PixmapFormat.ARGB4444);
-        smlEnemy2 = g.newPixmap("greencube.png", Graphics.PixmapFormat.ARGB4444);
-        smlEnemy3 = g.newPixmap("redcube.png", Graphics.PixmapFormat.ARGB4444);
-        smlEnemyBoss = g.newPixmap("boss1.png", Graphics.PixmapFormat.ARGB4444);
-        lrgEnemy1 = g.newPixmap("badguy1.png", Graphics.PixmapFormat.ARGB4444);
-        lrgEnemy1 = g.newPixmap("badguy2.png", Graphics.PixmapFormat.ARGB4444);
-        lrgEnemy1 = g.newPixmap("badguy3.png", Graphics.PixmapFormat.ARGB4444);
-        lrgEnemy1 = g.newPixmap("badguy4.png", Graphics.PixmapFormat.ARGB4444);
+        smlEnemy1 = g.newPixmap("BattleScene/bluecube.png", Graphics.PixmapFormat.ARGB4444);
+        smlEnemy2 = g.newPixmap("BattleScene/greencube.png", Graphics.PixmapFormat.ARGB4444);
+        smlEnemy3 = g.newPixmap("BattleScene/redcube.png", Graphics.PixmapFormat.ARGB4444);
+        smlEnemyBoss = g.newPixmap("BattleScene/boss1.png", Graphics.PixmapFormat.ARGB4444);
+        lrgEnemy1 = g.newPixmap("BattleScene/badguy1.png", Graphics.PixmapFormat.ARGB4444);
+        lrgEnemy2 = g.newPixmap("BattleScene/badguy2.png", Graphics.PixmapFormat.ARGB4444);
+        lrgEnemy3 = g.newPixmap("BattleScene/badguy3.png", Graphics.PixmapFormat.ARGB4444);
+        lrgEnemy4 = g.newPixmap("BattleScene/badguy4.png", Graphics.PixmapFormat.ARGB4444);
+
+        // Load Attack bitmaps
+        attackIcons = new Pixmap[3];
+        attackIcons[0] = g.newPixmap("BattleScene/FireIcon.png", Graphics.PixmapFormat.ARGB4444);
+        attackIcons[1] = g.newPixmap("BattleScene/WaterIcon.png", Graphics.PixmapFormat.ARGB4444);
+        attackIcons[2] = g.newPixmap("BattleScene/LeafIcon.png", Graphics.PixmapFormat.ARGB4444);
+        // -1 is no attack
+        currentPlayerAttack = -1;
+        currentEnemyAttack = -1;
 
         // Load the healthbar bitmaps
         barBackground = g.newPixmap("BackBorderUI.png", Graphics.PixmapFormat.ARGB4444);
@@ -115,11 +135,13 @@ public class BattleScreen extends Screen {
         currentEnemy = 0;
         waitTime = 1.55f;
         currentTimer = 0;
+        step1 = false;
+        step2 = false;
+        attackChosen = false;
     }
 
     @Override
-    public void update(float deltaTime) {
-        boolean attackChosen = false;
+    public void update(float deltaTime) throws InterruptedException {
         List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
         int len = touchEvents.size();
@@ -133,68 +155,98 @@ public class BattleScreen extends Screen {
 
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
-                if(fireButton.IsInBounds(event))
-                {
-                    ProcessResult(CheckResult(0));
-                    attackChosen = true;
-                }
+                if(!attackChosen) {
+                    if (fireButton.IsInBounds(event)) {
+                        ProcessResult(CheckResult(0));
+                        attackChosen = true;
+                        currentPlayerAttack = 0;
+                    }
 
-                if(waterButton.IsInBounds(event))
-                {
-                    ProcessResult(CheckResult(1));
-                    attackChosen = true;
-                }
+                    if (waterButton.IsInBounds(event)) {
+                        ProcessResult(CheckResult(1));
+                        attackChosen = true;
+                        currentPlayerAttack = 1;
+                    }
 
-                if(leafButton.IsInBounds(event))
-                {
-                    ProcessResult(CheckResult(2));
-                    attackChosen = true;
-                }
+                    if (leafButton.IsInBounds(event)) {
+                        ProcessResult(CheckResult(2));
+                        attackChosen = true;
+                        currentPlayerAttack = 2;
+                    }
 
-                if(runButton.IsInBounds(event))
-                {
-                    game.setScreen(new HomeScreen(game));
-                    return;
+                    if (runButton.IsInBounds(event)) {
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
             }
         }
 
         if(attackChosen)
         {
-            // Update health bars
-            playerHealth.fillAmount = (float)game.getData().GetHP() / (float)game.getData().GetMaxHP();
-            enemyHealth.fillAmount = (float)enemies[currentEnemy].GetCurrentHP() / (float)enemies[currentEnemy].GetMaxHP();
-            // Check for enemy death
-            if(enemies[currentEnemy].GetCurrentHP() <= 0)
-            {
-                if(currentEnemy < enemies.length - 1) {
-                    game.getData().SetPetExperience(enemies[currentEnemy].GetExpGiven());
-                    currentEnemy++;
-                    enemyHealth.fillAmount = (float)enemies[currentEnemy].GetCurrentHP() / (float)enemies[currentEnemy].GetMaxHP();
-                }else {
-                    game.setScreen(new WinScreen(game));
-                    return;
-                }
+            currentTimer += deltaTime;
+            // Wait
+            // Show Attacks
+
+            // Wait
+
+            // Player Animate?
+            // Enemy Damage Anim
+
+            // Wait
+            if(currentTimer > 1 && !step1) {
+                // Update enemy health bar
+                enemyHealth.fillAmount = (float) enemies[currentEnemy].GetCurrentHP() / (float) enemies[currentEnemy].GetMaxHP();
+                step1 = true;
+
+            }
+            // Wait
+
+            // Enemy Animate?
+            // Player Damage Anim
+
+            // Wait
+            if(currentTimer > 2 && !step2) {
+                // Update player health bar
+                playerHealth.fillAmount = (float) game.getData().GetHP() / (float) game.getData().GetMaxHP();
+                step2 = true;
             }
 
-            // Check for player death
-            if(game.getData().GetHP() <= 0)
-            {
-                if(game.getData().GetNumOfItem1() > 0 ||
-                        game.getData().GetNumOfItem2() > 0 ||
-                        game.getData().GetNumOfItem3() > 0 ||
-                        game.getData().GetNumOfItem4() > 0 ||
-                        game.getData().GetNumOfItem5() > 0 ||
-                        game.getData().GetMoney() > 200)
-                {
-                    game.setScreen(new LoseScreen(game));
-                    return;
+            // Wait
+            if(currentTimer > 3) {
+                // Check for enemy death
+                if (enemies[currentEnemy].GetCurrentHP() <= 0) {
+                    if (currentEnemy < enemies.length - 1) {
+                        game.getData().SetPetExperience(enemies[currentEnemy].GetExpGiven());
+                        currentEnemy++;
+                        enemyHealth.fillAmount = (float) enemies[currentEnemy].GetCurrentHP() / (float) enemies[currentEnemy].GetMaxHP();
+                    } else {
+                        game.setScreen(new WinScreen(game));
+                        return;
+                    }
                 }
-                else
-                {
-                    game.setScreen(new GameOverScreen(game));
-                    return;
+
+                // Check for player death
+                if (game.getData().GetHP() <= 0) {
+                    if (game.getData().GetNumOfItem1() > 0 ||
+                            game.getData().GetNumOfItem2() > 0 ||
+                            game.getData().GetNumOfItem3() > 0 ||
+                            game.getData().GetNumOfItem4() > 0 ||
+                            game.getData().GetNumOfItem5() > 0 ||
+                            game.getData().GetMoney() > 200) {
+                        game.setScreen(new LoseScreen(game));
+                        return;
+                    } else {
+                        game.setScreen(new GameOverScreen(game));
+                        return;
+                    }
                 }
+                currentPlayerAttack = -1;
+                currentEnemyAttack = -1;
+                currentTimer = 0;
+                step1 = false;
+                step2 = false;
+                attackChosen = false;
             }
         }
     }
@@ -205,6 +257,18 @@ public class BattleScreen extends Screen {
         // Draw backgroud
         g.drawPixmap(battleEnvironmentImage, 0, 0, 0, 0, battleEnvironmentImage.getWidth(), battleEnvironmentImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(buttonBackgroundImage, 0, 0, 100, 100, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight());
+
+        // If the player has attacked display the attack image
+        if(currentPlayerAttack > -1)
+        {
+            g.drawPixmap(attackIcons[currentPlayerAttack], 2, 5, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        }
+
+        // If the player has attacked display the attack image
+        if(currentEnemyAttack > -1)
+        {
+            g.drawPixmap(attackIcons[currentEnemyAttack], 60, 5, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        }
 
         // Draw player and enemy
         player.Draw(deltaTime);
@@ -236,15 +300,11 @@ public class BattleScreen extends Screen {
 
     }
 
-    private void BattleAnimation(float DeltaTime)
-    {
-
-    }
-
     private int CheckResult(int playerChoice)
     {
         Random rand = new Random();
         int enemyChoice = rand.nextInt(3);
+        currentEnemyAttack = enemyChoice;
 
         if(playerChoice == enemyChoice)
         {
@@ -295,8 +355,12 @@ public class BattleScreen extends Screen {
             playerMultiplier = 1.5f;
             enemyMultiplier = 0.5f;
         }
-        game.getData().AddHP(-(int)((float)enemies[currentEnemy].GetAttackPower() * enemyMultiplier));
+        // Damage the enemy first
         enemies[currentEnemy].Damage((int)((float)game.getData().GetAtkPower() * playerMultiplier));
+        // If the enemy is not dead damage the player
+        if(enemies[currentEnemy].GetCurrentHP() > 0) {
+            game.getData().AddHP(-(int) ((float) enemies[currentEnemy].GetAttackPower() * enemyMultiplier));
+        }
     }
 
     private void SetEnemies()
