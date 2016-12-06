@@ -123,8 +123,12 @@ public class HomeScreen extends Screen {
 
         // Create number display
         levelDisplay = new NumberDisplay(g, font, 77, 14, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
         // Draw animated character
-        character = new AnimatedPixmap(g, cybordBird, 40, 35, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        character = new AnimatedPixmap(g, cybordBird, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //character = new AnimatedPixmap(g, robotFrog, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //character = new AnimatedPixmap(g, robotMan, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
     }
 
     @Override
@@ -210,8 +214,9 @@ public class HomeScreen extends Screen {
         g.drawPixmap(happyFaceImage, 1, 15, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         //Character
-        //g.drawPixmap(cybordBird, 40, 35, 0, 0, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
         character.Draw(deltaTime);
+
+
 
         //Buttons being drawn
         battleButton.Draw();
