@@ -8,17 +8,10 @@ import com.framework.Pixmap;
  * Created by Carlo Albino on 2016-11-10.
  */
 
-public class Button {
+public class Button extends UIElement {
 
-    private Graphics graphics;          // Reference to graphics
     private Pixmap imageNormal;         // Image of the button in a normal state
     private Pixmap imagePressed;        // Image of the button in a pressed state
-    private int left, top, right, bottom;   // The bounds of the button in screen percentage
-    private int screenLeft, screenTop, screenRight, screenBottom;   // The bounds of the button in pixels
-    private int sourceX, sourceY;             // The start point of the button's image on the PNG (used for sprite sheets)
-    private int sourceWidth, sourceHeight;    // The width and height of the image on the PNG
-    private int screenWidth, screenHeight;  // Screen dimensions
-    private float bgRatio;              // The background to screen ratio
     private boolean isPressed;          // Is the button pressed?
 
     public Button(Graphics g, Pixmap normal, Pixmap pressed, int l, int t, int srcX, int srcY, int screenW, int screenH, float ratio)
@@ -42,19 +35,7 @@ public class Button {
     }
 
     // Helper functions
-    public int Left() {return left;}
-    public int Right() {return right;}
-    public int Top() {return top;}
-    public int Bottom() {return bottom;}
     public Pixmap GetImage() {return imageNormal;}
-    public int GetWidth()
-    {
-        return screenRight - screenLeft;
-    }
-    public int GetHeight()
-    {
-        return  screenBottom - screenTop;
-    }
 
     // Draw the button onto the screen
     public void Draw()
@@ -94,21 +75,4 @@ public class Button {
     {
         isPressed = b;
     }
-
-    // Set the right and bottom bounds of the button in screen percentage units
-    private void SetBottomRight()
-    {
-        right = left + (int)((float)(100 * sourceWidth / screenWidth) * bgRatio);
-        bottom = top + (int)((float)(100 * sourceHeight / screenHeight) * bgRatio);
-    }
-
-    // Convert the screen percentage units of the bounds to screen coordinates
-    private void ConvertToScreenCoord()
-    {
-        screenLeft = (int)((left * 0.01f) * screenWidth);
-        screenRight = (int)((right * 0.01f) * screenWidth);
-        screenTop = (int)((top * 0.01f) * screenHeight);
-        screenBottom = (int)((bottom * 0.01f) * screenHeight);
-    }
-
 }
