@@ -1,8 +1,5 @@
 package com.robomigos.squadgames.robomigos.Scenes;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
