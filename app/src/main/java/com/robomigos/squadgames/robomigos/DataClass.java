@@ -44,7 +44,7 @@ public class DataClass{
         hp = 10;
         maxHP = 10;
         atkPower = 6;
-        money = 0;
+        money = 100000;
         numOfItem1 = 2;
         numOfItem2 = 2;
         numOfItem3 = 2;

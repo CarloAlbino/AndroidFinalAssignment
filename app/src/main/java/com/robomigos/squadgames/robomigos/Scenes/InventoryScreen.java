@@ -6,6 +6,7 @@ import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
 import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.NumberDisplay;
 
 import java.util.List;
 
@@ -27,11 +28,23 @@ public class InventoryScreen extends Screen {
     private static Pixmap Smoothytxt;
     private static Pixmap EnergyDrink;
     private static Pixmap EnergyDrinktxt;
-    //private static Pixmap currency;
+    private static Pixmap currency;
     private static Pixmap BuyButtons;
+
 
     //private Button BuyButton;
     private Button backButton;
+    private Button AppleButton;
+    private Button CakeButton;
+    private Button SmoothyButton;
+    private Button EnergyDrinkButton;
+
+    public static Pixmap font;
+    //public NumberDisplay levelDisplay;
+    //public NumberDisplay ApplePrice;
+    //public NumberDisplay CakePrice;
+    //public NumberDisplay SmoothyPrice;
+    //public NumberDisplay EnergyPrice;
 
     public InventoryScreen(Game game)
     {
@@ -43,23 +56,32 @@ public class InventoryScreen extends Screen {
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
         BuyButtons = g.newPixmap("BuyButtons.png", Graphics.PixmapFormat.ARGB4444);
-        title = g.newPixmap("InventoryLogo.png", Graphics.PixmapFormat.ARGB4444);
+        title = g.newPixmap("StoreLogo.png", Graphics.PixmapFormat.ARGB4444);
         Appletxt = g.newPixmap("Appletxt.png", Graphics.PixmapFormat.ARGB4444);
         Caketxt = g.newPixmap("Caketxt.png", Graphics.PixmapFormat.ARGB4444);
         EnergyDrinktxt = g.newPixmap("EnergyDrinktxt.png", Graphics.PixmapFormat.ARGB4444);
         Smoothytxt = g.newPixmap("Smoothytxt.png", Graphics.PixmapFormat.ARGB4444);
-        //currency = g.newPixmap("RoboCurrency.png", Graphics.PixmapFormat.ARGB4444);
+        currency = g.newPixmap("RoboCurrency.png", Graphics.PixmapFormat.ARGB4444);
         Apple = g.newPixmap("Apple.png", Graphics.PixmapFormat.ARGB4444);
         Cake = g.newPixmap("Cake.png", Graphics.PixmapFormat.ARGB4444);
         EnergyDrink = g.newPixmap("EnergyDrink.png", Graphics.PixmapFormat.ARGB4444);
         Smoothy = g.newPixmap("Smoothy.png", Graphics.PixmapFormat.ARGB4444);
 
+        //font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
+        //levelDisplay = new NumberDisplay(g, font, 18, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //ApplePrice = new NumberDisplay(g, font, 90, 26, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //CakePrice = new NumberDisplay(g, font, 90, 41, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //EnergyPrice = new NumberDisplay(g, font, 90, 56, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //SmoothyPrice = new NumberDisplay(g, font, 90, 71, g.getWidth(), g.getHeight(), bgToScreenRatio);
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
         // Create buttons
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-
+        AppleButton = new Button(g, BuyButtons, BuyButtons, 18, 26, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        CakeButton = new Button(g, BuyButtons, BuyButtons, 18, 41, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        EnergyDrinkButton = new Button(g, BuyButtons, BuyButtons, 18, 56, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        SmoothyButton = new Button(g, BuyButtons, BuyButtons, 18, 71, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
     }
 
     @Override
@@ -70,6 +92,7 @@ public class InventoryScreen extends Screen {
         for (int i = 0; i < len; i++)
         {
             Input.TouchEvent event = touchEvents.get(i);
+
             if(event.type == Input.TouchEvent.TOUCH_DOWN)
             {
                 if(backButton.IsInBounds(event))
@@ -86,6 +109,33 @@ public class InventoryScreen extends Screen {
                     game.setScreen(new HomeScreen(game));
                     return;
                 }
+
+                if(AppleButton.IsInBounds(event))
+                {
+                    game.getData().AddItem1(-1);
+                    game.getData().AddHunger(0.2f);
+                   //game.getData().AddMoney(-20);
+                }
+                if(CakeButton.IsInBounds(event))
+                {
+                    game.getData().AddItem2(-1);
+                    game.getData().AddHappiness(0.3f);
+                    game.getData().AddHunger(1.0f);
+                    //game.getData().AddMoney(-30);
+                }
+                if(EnergyDrinkButton.IsInBounds(event))
+                {
+                    game.getData().AddItem3(-1);
+                    game.getData().AddHappiness(-0.3f);
+                    game.getData().AddHunger(0.4f);
+                    //game.getData().AddMoney(-40);
+                }
+                if(SmoothyButton.IsInBounds(event))
+                {
+                    game.getData().AddItem4(-1);
+                    game.getData().AddHunger(-0.3f);
+                    //game.getData().AddMoney(-50);
+                }
             }
         }
     }
@@ -94,10 +144,14 @@ public class InventoryScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
-        g.drawPixmap(BuyButtons, 17, 25, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(BuyButtons, 17, 40, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(BuyButtons, 17, 55, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(BuyButtons, 17, 70, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        AppleButton.Draw();
+        CakeButton.Draw();
+        EnergyDrinkButton.Draw();
+        SmoothyButton.Draw();
+        //g.drawPixmap(BuyButtons, 17, 25, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(BuyButtons, 17, 40, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(BuyButtons, 17, 55, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(BuyButtons, 17, 70, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(title, 0, 0, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(Apple, 0, 22, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(Appletxt, 38, 27, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
@@ -107,10 +161,17 @@ public class InventoryScreen extends Screen {
         g.drawPixmap(EnergyDrinktxt, 30, 57, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(Smoothy, 3, 63, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(Smoothytxt, 35, 72, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        /*g.drawPixmap(currency, 70, 20, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(currency, 70, 28, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(currency, 70, 36, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(currency, 70, 44, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);*/
+       // g.drawPixmap(currency, 0, 5, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+       // g.drawPixmap(currency, 79, 27, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+       // g.drawPixmap(currency, 79, 42, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+       // g.drawPixmap(currency, 79, 57, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(currency, 79, 72, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        //levelDisplay.Draw(Integer.toString(game.getData().GetMoney()), 3);
+        //ApplePrice.Draw(Integer.toString(20), 2);
+        //CakePrice.Draw(Integer.toString(30), 2);
+        //EnergyPrice.Draw(Integer.toString(40), 2);
+        //SmoothyPrice.Draw(Integer.toString(50), 2);
         backButton.Draw();
     }
 
@@ -129,3 +190,4 @@ public class InventoryScreen extends Screen {
 
     }
 }
+
