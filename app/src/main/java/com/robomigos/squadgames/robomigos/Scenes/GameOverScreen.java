@@ -5,6 +5,7 @@ import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
+import com.robomigos.squadgames.robomigos.AnimatedPixmap;
 import com.robomigos.squadgames.robomigos.Button;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class GameOverScreen extends Screen {
     private static Pixmap background;
     private static Pixmap backButtonNormal;
     private static Pixmap backButtonPressed;
+
+    public static Pixmap  graveimage;
+    public AnimatedPixmap grave;
 
     private Button backButton;
 
@@ -35,6 +39,9 @@ public class GameOverScreen extends Screen {
 
         // Create buttons
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        graveimage = g.newPixmap("rip.png", Graphics.PixmapFormat.ARGB4444);
+        grave = new AnimatedPixmap(g, graveimage, 32, 55, 4, 1, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         game.getData().ResetAll(game.getFileIO());
 
@@ -75,6 +82,7 @@ public class GameOverScreen extends Screen {
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
 
         backButton.Draw();
+        grave.Draw(deltaTime);
     }
 
     @Override

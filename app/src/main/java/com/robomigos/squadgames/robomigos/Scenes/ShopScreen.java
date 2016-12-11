@@ -130,18 +130,18 @@ public class ShopScreen extends Screen {
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
-                    if(game.getData().GetMoney() >= 40) {
+                    if(game.getData().GetMoney() >= 50) {
                         game.getData().AddItem3(1);
-                        game.getData().AddMoney(-40);
+                        game.getData().AddMoney(-50);
                         game.getData().SaveGame(game.getFileIO());
                     }
 
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
-                    if(game.getData().GetMoney() >= 50) {
+                    if(game.getData().GetMoney() >= 75) {
                         game.getData().AddItem4(1);
-                        game.getData().AddMoney(-50);
+                        game.getData().AddMoney(-75);
                         game.getData().SaveGame(game.getFileIO());
                     }
                 }
@@ -179,8 +179,8 @@ public class ShopScreen extends Screen {
         levelDisplay.Draw(Integer.toString(game.getData().GetMoney()), 3);
         ApplePrice.Draw(Integer.toString(20), 2);
         CakePrice.Draw(Integer.toString(30), 2);
-        EnergyPrice.Draw(Integer.toString(40), 2);
-        SmoothyPrice.Draw(Integer.toString(50), 2);
+        EnergyPrice.Draw(Integer.toString(50), 2);
+        SmoothyPrice.Draw(Integer.toString(75), 2);
         backButton.Draw();
     }
 

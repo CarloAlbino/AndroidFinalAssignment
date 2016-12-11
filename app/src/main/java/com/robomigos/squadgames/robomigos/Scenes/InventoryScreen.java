@@ -117,7 +117,7 @@ public class InventoryScreen extends Screen {
                     if(game.getData().GetNumOfItem1() > 0) {
                         game.getData().AddItem1(-1);
                         game.getData().AddHunger(0.2f);
-                        game.getData().AddHP(5);
+                        game.getData().AddHP(8);
 
                         if (game.getData().GetHunger() >= 1.0f) {
                             game.getData().AddHappiness(-0.15f);
@@ -133,7 +133,7 @@ public class InventoryScreen extends Screen {
                     if(game.getData().GetNumOfItem2() > 0) {
                         game.getData().AddItem2(-1);
                         game.getData().AddHunger(0.9f);
-                        game.getData().AddHP(7);
+                        game.getData().AddHP(12);
 
                         if (game.getData().GetHunger() >= 1.0f) {
                             game.getData().AddHappiness(-0.15f);
@@ -151,7 +151,7 @@ public class InventoryScreen extends Screen {
                     if(game.getData().GetNumOfItem3() > 0) {
                         game.getData().AddItem3(-1);
                         game.getData().AddHunger(-0.4f);
-                        game.getData().AddHP(10);
+                        game.getData().AddHP(20);
 
                         game.getData().AddHappiness(-0.3f);
 
@@ -165,7 +165,7 @@ public class InventoryScreen extends Screen {
                     if(game.getData().GetNumOfItem4() > 0) {
                         game.getData().AddItem4(-1);
                         game.getData().AddHunger(0.2f);
-                        game.getData().AddHP(20);
+                        game.getData().AddHP(25);
 
                         if (game.getData().GetHunger() >= 1.0f) {
                             game.getData().AddHappiness(-0.15f);
