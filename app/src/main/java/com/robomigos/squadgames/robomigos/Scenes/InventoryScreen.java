@@ -82,6 +82,8 @@ public class InventoryScreen extends Screen {
         CakeButton = new Button(g, BuyButtons, BuyButtons, 18, 41, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         EnergyDrinkButton = new Button(g, BuyButtons, BuyButtons, 18, 56, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         SmoothyButton = new Button(g, BuyButtons, BuyButtons, 18, 71, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        LoadNewBackgroundMusic("Audio/Music/Shop.ogg");
     }
 
     @Override
@@ -112,61 +114,69 @@ public class InventoryScreen extends Screen {
 
                 if(AppleButton.IsInBounds(event))
                 {
-                    game.getData().AddItem1(-1);
-                    game.getData().AddHunger(0.2f);
-                    game.getData().AddHP(5);
+                    if(game.getData().GetNumOfItem1() > 0) {
+                        game.getData().AddItem1(-1);
+                        game.getData().AddHunger(0.2f);
+                        game.getData().AddHP(8);
 
-                    if(game.getData().GetHunger() >= 1.0f) {
-                        game.getData().AddHappiness(-0.15f);
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
                     }
-
-                    game.getData().SaveGame(game.getFileIO());
-                    game.setScreen(new HomeScreen(game));
-                    return;
                 }
                 if(CakeButton.IsInBounds(event))
                 {
-                    game.getData().AddItem2(-1);
-                    game.getData().AddHunger(0.9f);
-                    game.getData().AddHP(7);
+                    if(game.getData().GetNumOfItem2() > 0) {
+                        game.getData().AddItem2(-1);
+                        game.getData().AddHunger(0.9f);
+                        game.getData().AddHP(12);
 
-                    if(game.getData().GetHunger() >= 1.0f) {
-                        game.getData().AddHappiness(-0.15f);
-                    }else {
-                        game.getData().AddHappiness(0.4f);
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        } else {
+                            game.getData().AddHappiness(0.4f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
                     }
-
-                    game.getData().SaveGame(game.getFileIO());
-                    game.setScreen(new HomeScreen(game));
-                    return;
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
-                    game.getData().AddItem3(-1);
-                    game.getData().AddHunger(-0.4f);
-                    game.getData().AddHP(10);
+                    if(game.getData().GetNumOfItem3() > 0) {
+                        game.getData().AddItem3(-1);
+                        game.getData().AddHunger(-0.4f);
+                        game.getData().AddHP(20);
 
-                    game.getData().AddHappiness(-0.3f);
+                        game.getData().AddHappiness(-0.3f);
 
-                    game.getData().SaveGame(game.getFileIO());
-                    game.setScreen(new HomeScreen(game));
-                    return;
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
-                    game.getData().AddItem4(-1);
-                    game.getData().AddHunger(0.2f);
-                    game.getData().AddHP(20);
+                    if(game.getData().GetNumOfItem4() > 0) {
+                        game.getData().AddItem4(-1);
+                        game.getData().AddHunger(0.2f);
+                        game.getData().AddHP(25);
 
-                    if(game.getData().GetHunger() >= 1.0f) {
-                        game.getData().AddHappiness(-0.15f);
-                    }else {
-                        game.getData().AddHappiness(0.3f);
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        } else {
+                            game.getData().AddHappiness(0.3f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
                     }
-
-                    game.getData().SaveGame(game.getFileIO());
-                    game.setScreen(new HomeScreen(game));
-                    return;
                 }
             }
         }

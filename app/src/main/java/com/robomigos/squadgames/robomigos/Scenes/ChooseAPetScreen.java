@@ -5,6 +5,7 @@ import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
+import com.framework.Sound;
 import com.robomigos.squadgames.robomigos.Button;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class ChooseAPetScreen extends Screen {
     private Button char3Button;
     private Button backButton;
 
+    private Sound frogSound;
+    private Sound robotSound;
+    private Sound batSound;
+
 
     public ChooseAPetScreen(Game game)
     {
@@ -52,6 +57,10 @@ public class ChooseAPetScreen extends Screen {
         char2Button = new Button(g, char2ButtonImage, char2ButtonImage, 15, char1Button.Bottom() + 3, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         char3Button = new Button(g, char3ButtonImage, char3ButtonImage, 15, char2Button.Bottom() + 3, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        frogSound = game.getAudio().newSound("Audio/SFX/FrogSound.ogg");
+        robotSound = game.getAudio().newSound("Audio/SFX/RobotSound.ogg");
+        batSound = game.getAudio().newSound("Audio/SFX/BirdSound.ogg");
     }
 
 
@@ -72,6 +81,7 @@ public class ChooseAPetScreen extends Screen {
                 }
                 if(char1Button.IsInBounds(event))
                 {
+                    frogSound.play(1);
                     game.getData().SetPetChoice(0);
                     game.getData().SaveGame(game.getFileIO());
                     game.setScreen(new HomeScreen(game));
@@ -79,6 +89,7 @@ public class ChooseAPetScreen extends Screen {
                 }
                 if(char2Button.IsInBounds(event))
                 {
+                    robotSound.play(1);
                     game.getData().SetPetChoice(1);
                     game.getData().SaveGame(game.getFileIO());
                     game.setScreen(new HomeScreen(game));
@@ -86,6 +97,7 @@ public class ChooseAPetScreen extends Screen {
                 }
                 if(char3Button.IsInBounds(event))
                 {
+                    batSound.play(1);
                     game.getData().SetPetChoice(2);
                     game.getData().SaveGame(game.getFileIO());
                     game.setScreen(new HomeScreen(game));

@@ -16,6 +16,7 @@ import java.util.List;
 public class InstructionsScreen extends Screen {
 
     private static Pixmap background;
+    private static Pixmap text;
     private static Pixmap backButtonNormal;
     private static Pixmap backButtonPressed;
 
@@ -28,6 +29,7 @@ public class InstructionsScreen extends Screen {
 
         // Load the bitmaps
         background = g.newPixmap("MenuBackground.png", Graphics.PixmapFormat.RGB565);
+        text = g.newPixmap("InstructionsText.png", Graphics.PixmapFormat.ARGB4444);
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
 
@@ -71,6 +73,7 @@ public class InstructionsScreen extends Screen {
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
+        g.drawPixmap(text, 0, 0, 100, 100, 0, 0, text.getWidth(), text.getHeight(), g.getWidth(), g.getHeight());
 
         backButton.Draw();
     }

@@ -5,10 +5,26 @@ public abstract class Screen {
     protected final Game game;
     protected float bgToScreenRatio;
 
+    protected static Music bgMusic;
+
     public Screen(Game game)
     {
         this.game = game;
         this.bgToScreenRatio = 1;
+
+        // Load music
+        if(bgMusic != null) {
+            if (!bgMusic.isPlaying()) {
+                bgMusic = game.getAudio().newMusic("Audio/Music/Title.ogg");
+                bgMusic.setLooping(true);
+                bgMusic.play();
+            }
+        }else {
+            bgMusic = game.getAudio().newMusic("Audio/Music/Title.ogg");
+            bgMusic.setLooping(true);
+            bgMusic.play();
+        }
+
     }
 
     public abstract void update(float deltaTime) throws InterruptedException;
@@ -25,6 +41,15 @@ public abstract class Screen {
             return true;
         else
             return false;
+    }
+
+    protected void LoadNewBackgroundMusic(String fileName)
+    {
+        bgMusic.stop();
+        bgMusic.dispose();
+        bgMusic = game.getAudio().newMusic(fileName);
+        bgMusic.setLooping(true);
+        bgMusic.play();
     }
 
 }
