@@ -36,6 +36,8 @@ public class GameOverScreen extends Screen {
         // Create buttons
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
+        game.getData().ResetAll(game.getFileIO());
+
     }
 
     @Override

@@ -299,4 +299,25 @@ public class DataClass{
             }
         }
     }
+
+    public void ResetAll(FileIO saveFile)
+    {
+        petChoice = -1; // If after load the petChoice is -1 then it is a new game.
+        unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
+        petLevel = 0;
+        petExperience = 0;
+        happinessLvl = 1.0f;
+        hungerLvl = 0.0f;
+        hp = 10;
+        maxHP = 10;
+        atkPower = 6;
+        money = 100;
+        numOfItem1 = 2;
+        numOfItem2 = 2;
+        numOfItem3 = 2;
+        numOfItem4 = 2;
+        numOfItem5 = 2;
+
+        SaveGame(saveFile);
+    }
 }
