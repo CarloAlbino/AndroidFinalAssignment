@@ -53,6 +53,7 @@ public class ReleaseScreen extends Screen {
             {
                 if(yesButton.IsInBounds(event))
                 {
+                    game.getData().ResetAll(game.getFileIO());
                     game.setScreen(new TitleScreen(game));
                     return;
                 }

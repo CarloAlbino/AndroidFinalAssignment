@@ -1,5 +1,7 @@
 package com.robomigos.squadgames.robomigos.Scenes;
 
+import android.widget.Switch;
+
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class ChooseBattleScreen extends Screen {
     private static Pixmap background;
+    private static Pixmap backgroundImage;
     private static Pixmap backButtonNormal;
     private static Pixmap backButtonPressed;
 
@@ -38,7 +41,8 @@ public class ChooseBattleScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        background = g.newPixmap("level_selection3.png", Graphics.PixmapFormat.RGB565);
+        background = g.newPixmap("HomeBackgroundUI.png", Graphics.PixmapFormat.RGB565);
+        backgroundImage = g.newPixmap("difficultyscreen.png", Graphics.PixmapFormat.RGB565);
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
 
@@ -79,39 +83,37 @@ public class ChooseBattleScreen extends Screen {
 
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
-                if(releaseButton.IsInBounds(event))
-                {
-                    game.setScreen(new ReleaseScreen(game));
-                    return;
+                switch(game.getData().GetUnlockedLevel()) {
+                    case 5:
+                        if (releaseButton.IsInBounds(event)) {
+                            game.setScreen(new ReleaseScreen(game));
+                            return;
+                        }
+                    case 4:
+                        if (expertButton.IsInBounds(event)) {
+                            game.setScreen(new BattleScreen(game, 4));
+                            return;
+                        }
+                    case 3:
+                        if (hardButton.IsInBounds(event)) {
+                            game.setScreen(new BattleScreen(game, 3));
+                            return;
+                        }
+                    case 2:
+                        if (mediumButton.IsInBounds(event)) {
+                            game.setScreen(new BattleScreen(game, 2));
+                            return;
+                        }
+                    case 1:
+                    default:
+                        if (easyButton.IsInBounds(event)) {
+                            game.setScreen(new BattleScreen(game, 1));
+                            return;
+                        }
+                        break;
                 }
 
-                if(easyButton.IsInBounds(event))
-                {
-                    game.setScreen(new BattleScreen(game, 1));
-                    return;
-                }
-
-                if(mediumButton.IsInBounds(event))
-                {
-                    game.setScreen(new BattleScreen(game, 2));
-                    return;
-                }
-
-                if(hardButton.IsInBounds(event))
-                {
-                    game.setScreen(new BattleScreen(game, 3));
-                    return;
-                }
-
-                if(expertButton.IsInBounds(event))
-                {
-                    game.setScreen(new BattleScreen(game, 4));
-                    return;
-                }
-
-
-                if(backButton.IsInBounds(event))
-                {
+                if (backButton.IsInBounds(event)) {
                     backButton.Pressed(false);
                     game.setScreen(new HomeScreen(game));
                     return;
@@ -123,14 +125,26 @@ public class ChooseBattleScreen extends Screen {
     @Override
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
+        g.drawPixmap(backgroundImage, 0, 20, 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
 
         backButton.Draw();
-        easyButton.Draw();
-        mediumButton.Draw();
-        hardButton.Draw();
-        expertButton.Draw();
-        releaseButton.Draw();
+
+        switch(game.getData().GetUnlockedLevel())
+        {
+            case 5:
+                releaseButton.Draw();
+            case 4:
+                expertButton.Draw();
+            case 3:
+                hardButton.Draw();
+            case 2:
+                mediumButton.Draw();
+            case 1:
+            default:
+                easyButton.Draw();
+                break;
+        }
     }
 
     @Override

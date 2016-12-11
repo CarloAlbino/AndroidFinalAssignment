@@ -248,6 +248,7 @@ public class BattleScreen extends Screen {
                         currentEnemyAttack = -1;
                         showStats = true;
                         step3 = true;
+                        game.getData().SaveGame(game.getFileIO());
                     } else {
                         // Player has won
                         game.setScreen(new WinScreen(game, currentLevel));

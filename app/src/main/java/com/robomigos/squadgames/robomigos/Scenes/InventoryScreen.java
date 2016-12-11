@@ -114,27 +114,59 @@ public class InventoryScreen extends Screen {
                 {
                     game.getData().AddItem1(-1);
                     game.getData().AddHunger(0.2f);
-                   //game.getData().AddMoney(-20);
+                    game.getData().AddHP(5);
+
+                    if(game.getData().GetHunger() >= 1.0f) {
+                        game.getData().AddHappiness(-0.15f);
+                    }
+
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
                 }
                 if(CakeButton.IsInBounds(event))
                 {
                     game.getData().AddItem2(-1);
-                    game.getData().AddHappiness(0.3f);
-                    game.getData().AddHunger(1.0f);
-                    //game.getData().AddMoney(-30);
+                    game.getData().AddHunger(0.9f);
+                    game.getData().AddHP(7);
+
+                    if(game.getData().GetHunger() >= 1.0f) {
+                        game.getData().AddHappiness(-0.15f);
+                    }else {
+                        game.getData().AddHappiness(0.4f);
+                    }
+
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
                     game.getData().AddItem3(-1);
+                    game.getData().AddHunger(-0.4f);
+                    game.getData().AddHP(10);
+
                     game.getData().AddHappiness(-0.3f);
-                    game.getData().AddHunger(0.4f);
-                    //game.getData().AddMoney(-40);
+
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
                     game.getData().AddItem4(-1);
-                    game.getData().AddHunger(-0.3f);
-                    //game.getData().AddMoney(-50);
+                    game.getData().AddHunger(0.2f);
+                    game.getData().AddHP(20);
+
+                    if(game.getData().GetHunger() >= 1.0f) {
+                        game.getData().AddHappiness(-0.15f);
+                    }else {
+                        game.getData().AddHappiness(0.3f);
+                    }
+
+                    game.getData().SaveGame(game.getFileIO());
+                    game.setScreen(new HomeScreen(game));
+                    return;
                 }
             }
         }

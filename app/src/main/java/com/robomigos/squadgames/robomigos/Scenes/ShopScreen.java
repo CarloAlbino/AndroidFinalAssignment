@@ -114,21 +114,25 @@ public class ShopScreen extends Screen {
                 {
                     game.getData().AddItem1(1);
                     game.getData().AddMoney(-20);
+                    game.getData().SaveGame(game.getFileIO());
                 }
                 if(CakeButton.IsInBounds(event))
                 {
                     game.getData().AddItem2(1);
                     game.getData().AddMoney(-30);
+                    game.getData().SaveGame(game.getFileIO());
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
                     game.getData().AddItem3(1);
                     game.getData().AddMoney(-40);
+                    game.getData().SaveGame(game.getFileIO());
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
                     game.getData().AddItem4(1);
                     game.getData().AddMoney(-50);
+                    game.getData().SaveGame(game.getFileIO());
                 }
             }
         }
