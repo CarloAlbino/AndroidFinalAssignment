@@ -43,16 +43,11 @@ public class DataClass{
         hp = 10;
         maxHP = 10;
         atkPower = 6;
-        //money = 500;
-        //numOfItem1 = 2;
-        //numOfItem2 = 2;
-        //numOfItem3 = 2;
-        //numOfItem4 = 2;
-        money = 0;
-        numOfItem1 = 0;
-        numOfItem2 = 0;
-        numOfItem3 = 0;
-        numOfItem4 = 0;
+        money = 500;
+        numOfItem1 = 2;
+        numOfItem2 = 2;
+        numOfItem3 = 2;
+        numOfItem4 = 2;
     }
 
     public int GetPetChoice() {return petChoice;}

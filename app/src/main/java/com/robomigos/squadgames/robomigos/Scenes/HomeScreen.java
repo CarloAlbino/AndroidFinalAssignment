@@ -52,6 +52,7 @@ public class HomeScreen extends Screen {
     //Level number
     public static Pixmap font;
     public NumberDisplay levelDisplay;
+    public static Pixmap levelText;
 
 
     //Robot Images
@@ -124,27 +125,29 @@ public class HomeScreen extends Screen {
 
         // Number font
         font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
+        levelText = g.newPixmap("BattleScene/PlayerLevel.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
 
         // Create buttons
-        battleButton = new Button(g, battleButtonImage, battleButtonImage, 5, 72, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        battleButton = new Button(g, battleButtonImage, battleButtonImage, 5, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         quitButton = new Button(g, quitButtonImage, quitButtonImage, 5, 88, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         inventoryButton = new Button(g, inventoryButtonImage, inventoryButtonImage, 58, 87, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        shopButton = new Button(g, shopButtonImage, shopButtonImage, 58, 72, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        shopButton = new Button(g, shopButtonImage, shopButtonImage, 58, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
        //Poop Button
         robotPoop = new Button(g, poopImage, poopImage, 65, 45, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Display Bars
-        healthBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 12, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //fullnessBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 20, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //happinessBar =new DisplayBar(g, backBarBorderImage, healthBarImage, 28, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        healthBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 14, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        fullnessBar = new DisplayBar(g, backBarBorderImage, hungerBarImage, 14, 12, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        happinessBar =new DisplayBar(g, backBarBorderImage, happinessBarImage, 14, 20, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         levelDisplay = new NumberDisplay(g, font, 77, 14, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Draw animated characters (This is the Array list of the characters)
+        character = new AnimatedPixmap[3];
         character[2] = new AnimatedPixmap(g, cybordBird, 15, 47, 8, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
         character[0] = new AnimatedPixmap(g, robotFrog, 15, 47, 8, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
         character[1] = new AnimatedPixmap(g, robotMan, 15, 47, 8, 3, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
@@ -286,6 +289,7 @@ public class HomeScreen extends Screen {
         //g.drawPixmap(hungerBarImage, 12, 16, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         //level box
+        g.drawPixmap(levelText, 69, 3, 281, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(levelBoxImage, 70, 11, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         levelDisplay.Draw(Integer.toString(game.getData().GetPetLevel()), 3);
 
@@ -303,11 +307,12 @@ public class HomeScreen extends Screen {
         shopButton.Draw();
 
         //For loop here to draw
-        for(int k = 0; k < m_poop.size(); ++k)
-        {
+        if(m_poop != null) {
+            for (int k = 0; k < m_poop.size(); ++k) {
 
-            m_poop.get(k).Draw();
+                m_poop.get(k).Draw();
 
+            }
         }
 
     }
