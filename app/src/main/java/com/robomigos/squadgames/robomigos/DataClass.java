@@ -35,21 +35,21 @@ public class DataClass{
 
     public DataClass()
     {
-        petChoice = 0; // If after load the petChoice is 0 then it is a new game.
+        petChoice = -1; // If after load the petChoice is -1 then it is a new game.
         unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
         petLevel = 0;
         petExperience = 0;
-        happinessLvl = 0.0f;
+        happinessLvl = 1.0f;
         hungerLvl = 0.0f;
-        hp = 0;
-        maxHP = 0;
-        atkPower = 0;
-        money = 0;
-        numOfItem1 = 0;
-        numOfItem2 = 0;
-        numOfItem3 = 0;
-        numOfItem4 = 0;
-        numOfItem5 = 0;
+        hp = 10;
+        maxHP = 10;
+        atkPower = 6;
+        money = 100000;
+        numOfItem1 = 2;
+        numOfItem2 = 2;
+        numOfItem3 = 2;
+        numOfItem4 = 2;
+        numOfItem5 = 2;
     }
 
     public int GetPetChoice() {return petChoice;}
@@ -87,15 +87,59 @@ public class DataClass{
         // Level Up system goes here.
         // Max HP raising goes here too.
         // AtkPower gets set here as well.
-
-        while(petExperience > 900)
+        int neededEXP;
+        switch(petLevel)
         {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                neededEXP = 350;
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                neededEXP = 450;
+                break;
+            case 10:
+            case 11:
+            case 12:
+                neededEXP = 550;
+                break;
+            case 13:
+            case 14:
+            case 15:
+                neededEXP = 700;
+                break;
+            case 16:
+                neededEXP = 900;
+                break;
+            case 17:
+                neededEXP = 1000;
+                break;
+            case 18:
+                neededEXP = 1500;
+                break;
+            case 19:
+                neededEXP = 3000;
+                break;
+            default:
+                // Max Level
+                neededEXP = -1;
+                break;
+        }
+
+        while(neededEXP >= 0 && petExperience > neededEXP)
+        {
+            // Update level and stats
             petLevel++;
             maxHP += 3;
             hp += 3;
             atkPower += 2;
-            petExperience = petExperience - 900;
-
+            petExperience = petExperience - neededEXP;
         }
     }
     // Home and battle affects the pets happiness

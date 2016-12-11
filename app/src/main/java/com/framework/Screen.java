@@ -11,7 +11,7 @@ public abstract class Screen {
         this.bgToScreenRatio = 1;
     }
 
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime) throws InterruptedException;
     public abstract void present(float deltaTime);
     public abstract void pause();
     public abstract void resume();

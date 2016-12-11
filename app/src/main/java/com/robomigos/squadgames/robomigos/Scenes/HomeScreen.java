@@ -5,7 +5,9 @@ import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
 import com.framework.Graphics;
+import com.robomigos.squadgames.robomigos.AnimatedPixmap;
 import com.robomigos.squadgames.robomigos.Button;
+import com.robomigos.squadgames.robomigos.DisplayBar;
 import com.robomigos.squadgames.robomigos.NumberDisplay;
 
 import java.util.List;
@@ -18,7 +20,6 @@ public class HomeScreen extends Screen {
 
     //Button Images
     private static Pixmap background;
-    public static Pixmap buttonBackgroundImage;
     public static Pixmap battleButtonImage;
     public static Pixmap quitButtonImage;
     public static Pixmap shopButtonImage;
@@ -55,12 +56,17 @@ public class HomeScreen extends Screen {
     public static Pixmap  robotPoop;
 
 
-//Buttons
-
+    //Buttons
     public Button battleButton;
     public Button shopButton;
     public Button inventoryButton;
     public Button quitButton;
+
+    //Bars
+    public DisplayBar healthBar;
+
+    // Animated Character
+    public AnimatedPixmap character;
 
 
 
@@ -70,21 +76,21 @@ public class HomeScreen extends Screen {
         Graphics g = game.getGraphics();
 
         // Load the bitmaps
-        backBarBorderImage =   g.newPixmap("Healthbar_Border.png", Graphics.PixmapFormat.RGB565);
+        backBarBorderImage =   g.newPixmap("BackBorderUI.png", Graphics.PixmapFormat.RGB565);
 
         //Bar Images
-        happinessBarImage =   g.newPixmap("Happybar_Pink.png", Graphics.PixmapFormat.RGB565);
-        healthBarImage =   g.newPixmap("Healthbar_Yellow.png", Graphics.PixmapFormat.RGB565);
-        hungerBarImage =  g.newPixmap("Hungerbar_Orange.png", Graphics.PixmapFormat.RGB565);
+        happinessBarImage =   g.newPixmap("HappinessBar.png", Graphics.PixmapFormat.RGB565);
+        healthBarImage =   g.newPixmap("HealthBar.png", Graphics.PixmapFormat.RGB565);
+        hungerBarImage =  g.newPixmap("HungerBar.png", Graphics.PixmapFormat.RGB565);
         levelBoxImage = g.newPixmap("LevelBox.png", Graphics.PixmapFormat.RGB565);
-        background =  g.newPixmap("HomeBackgroundUI.png", Graphics.PixmapFormat.RGB565);
-        dojoImage = g.newPixmap("Dojo.png",Graphics.PixmapFormat.RGB565);
+        background =  g.newPixmap("HomeScreen.png", Graphics.PixmapFormat.RGB565);
+        //dojoImage = g.newPixmap("Dojo.png",Graphics.PixmapFormat.RGB565);
 
 
         //faces images
-        angryFaceImage = g.newPixmap("AngryFace.png", Graphics.PixmapFormat.RGB565);
-        happyFaceImage =  g.newPixmap("HappyFace.png", Graphics.PixmapFormat.RGB565);
-        annoyedFaceImage =  g.newPixmap("AnnoyedFace.png", Graphics.PixmapFormat.RGB565);
+       //angryFaceImage = g.newPixmap("Angry.png", Graphics.PixmapFormat.RGB565);
+        happyFaceImage =  g.newPixmap("SmileyFace.png", Graphics.PixmapFormat.RGB565);
+        //annoyedFaceImage =  g.newPixmap("AnnoyedFace.png", Graphics.PixmapFormat.RGB565);
 
         //Button Images
         battleButtonImage = g.newPixmap("Battle.png",Graphics.PixmapFormat.ARGB4444);
@@ -99,21 +105,30 @@ public class HomeScreen extends Screen {
         robotFrog = g.newPixmap("frog.png",Graphics.PixmapFormat.RGB565);
         robotPoop = g.newPixmap("poop.png",Graphics.PixmapFormat.RGB565);
 
-
         // Number font
         font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
+
         // Create buttons
-         battleButton = new Button(g, battleButtonImage, battleButtonImage, 15, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-         quitButton = new Button(g, quitButtonImage, quitButtonImage, 15, 90, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        inventoryButton = new Button(g, inventoryButtonImage, inventoryButtonImage, 60, 90, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        shopButton = new Button(g, shopButtonImage, shopButtonImage, 60, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        battleButton = new Button(g, battleButtonImage, battleButtonImage, 5, 72, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        quitButton = new Button(g, quitButtonImage, quitButtonImage, 5, 88, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        inventoryButton = new Button(g, inventoryButtonImage, inventoryButtonImage, 58, 87, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        shopButton = new Button(g, shopButtonImage, shopButtonImage, 58, 72, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        // Create Display Bars
+        healthBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 12, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Create number display
-        levelDisplay = new NumberDisplay(g, font, 74, 12, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        levelDisplay = new NumberDisplay(g, font, 77, 14, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        // Draw animated character
+        character = new AnimatedPixmap(g, cybordBird, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //character = new AnimatedPixmap(g, robotFrog, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //character = new AnimatedPixmap(g, robotMan, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
     }
 
     @Override
@@ -143,8 +158,10 @@ public class HomeScreen extends Screen {
             {
                 if(battleButton.IsInBounds(event))
                 {
-                    game.setScreen(new ChooseBattleScreen(game));
-                    return;
+                    if(game.getData().GetHP() > 0) {
+                        game.setScreen(new ChooseBattleScreen(game));
+                        return;
+                    }
                 }
             }
             //Shop screen
@@ -165,21 +182,21 @@ public class HomeScreen extends Screen {
                     return;
                 }
             }
-
-
         }
+        healthBar.fillAmount -= deltaTime; // For testing the health bar
     }
 
     @Override
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
         //Backgrounds
-        g.drawPixmap(dojoImage, 0, 0, 100, 100, 0, 0, dojoImage.getWidth(), dojoImage.getHeight(), g.getWidth(), g.getHeight());
+        //g.drawPixmap(dojoImage, 0, 0, 100, 100, 0, 0, dojoImage.getWidth(), dojoImage.getHeight(), g.getWidth(), g.getHeight());
         g.drawPixmap(background, 0, 0, 100, 100, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight());
 
         //Health
-        g.drawPixmap(backBarBorderImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(healthBarImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(backBarBorderImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        //g.drawPixmap(healthBarImage, 12, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        healthBar.Draw();
 
         //Happiness
         g.drawPixmap(backBarBorderImage, 12, 10, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
@@ -190,13 +207,18 @@ public class HomeScreen extends Screen {
         g.drawPixmap(hungerBarImage, 12, 16, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         //level box
-        g.drawPixmap(levelBoxImage, 73, 11, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(levelBoxImage, 70, 11, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         levelDisplay.Draw(Integer.toString(game.getData().GetPetLevel()), 3);
 
         //Emotions
-        g.drawPixmap(happyFaceImage, 60, 6, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(happyFaceImage, 1, 15, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
-        //Buttons being drawed
+        //Character
+        character.Draw(deltaTime);
+
+
+
+        //Buttons being drawn
         battleButton.Draw();
         quitButton.Draw();
         inventoryButton.Draw();
