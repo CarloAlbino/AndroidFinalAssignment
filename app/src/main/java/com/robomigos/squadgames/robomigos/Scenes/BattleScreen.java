@@ -31,6 +31,9 @@ public class BattleScreen extends Screen {
     public Button waterButton;
     public Button runButton;
 
+    public static Pixmap playerArrow;
+    public static Pixmap enemyArrow;
+
     public static Pixmap petImage[];
     public AnimatedPixmap player;
 
@@ -105,6 +108,9 @@ public class BattleScreen extends Screen {
         barBackground = g.newPixmap("BackBorderUI.png", Graphics.PixmapFormat.ARGB4444);
         barForeground = g.newPixmap("HealthBar.png", Graphics.PixmapFormat.ARGB4444);
 
+        // Load the arrows
+        playerArrow = g.newPixmap("BattleScene/PlayerArrow.png", Graphics.PixmapFormat.ARGB4444);
+        enemyArrow = g.newPixmap("BattleScene/EnemyArrow.png", Graphics.PixmapFormat.ARGB4444);
 
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)buttonBackgroundImage.getHeight();
@@ -251,7 +257,7 @@ public class BattleScreen extends Screen {
     @Override
     public void present(float deltaTime) {
         Graphics g = game.getGraphics();
-        // Draw backgroud
+        // Draw background
         g.drawPixmap(battleEnvironmentImage, 0, 0, 0, 0, battleEnvironmentImage.getWidth(), battleEnvironmentImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         g.drawPixmap(buttonBackgroundImage, 0, 0, 100, 100, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight());
 
@@ -280,6 +286,11 @@ public class BattleScreen extends Screen {
         leafButton.Draw();
         waterButton.Draw();
         runButton.Draw();
+
+        // Draw arrows
+        g.drawPixmap(playerArrow, playerHealth.Left() + 9, playerHealth.Top() - 7, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(enemyArrow, enemyHealth.Left() + 15, playerHealth.Top() - 7, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+
     }
 
     @Override
