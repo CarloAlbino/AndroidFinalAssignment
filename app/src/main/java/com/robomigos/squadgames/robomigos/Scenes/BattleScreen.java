@@ -9,6 +9,7 @@ import com.robomigos.squadgames.robomigos.AnimatedPixmap;
 import com.robomigos.squadgames.robomigos.Button;
 import com.robomigos.squadgames.robomigos.DisplayBar;
 import com.robomigos.squadgames.robomigos.Enemy;
+import com.robomigos.squadgames.robomigos.NumberDisplay;
 
 import java.util.List;
 import java.util.Random;
@@ -34,6 +35,14 @@ public class BattleScreen extends Screen {
     public static Pixmap playerArrow;
     public static Pixmap enemyArrow;
 
+    public static Pixmap exp;
+    public static Pixmap plusSymbol;
+    public static Pixmap levelText;
+    public int expGained;
+    public NumberDisplay expGainedDisplay;
+    public NumberDisplay levelDisplay;
+    public static Pixmap numbers;
+
     public static Pixmap petImage[];
     public AnimatedPixmap player;
 
@@ -50,10 +59,11 @@ public class BattleScreen extends Screen {
 
     // Battle control
     private int currentEnemy;
-    private float waitTime;
     private float currentTimer;
     private boolean step1;
     private boolean step2;
+    private boolean step3;
+    private boolean showStats;
     boolean attackChosen;
 
     public static Pixmap barBackground;
@@ -112,6 +122,15 @@ public class BattleScreen extends Screen {
         playerArrow = g.newPixmap("BattleScene/PlayerArrow.png", Graphics.PixmapFormat.ARGB4444);
         enemyArrow = g.newPixmap("BattleScene/EnemyArrow.png", Graphics.PixmapFormat.ARGB4444);
 
+        // Load the battle feedback
+        exp = g.newPixmap("WinScene/BonusExp.png", Graphics.PixmapFormat.ARGB4444);
+        plusSymbol = g.newPixmap("WinScene/PlusSign.png", Graphics.PixmapFormat.ARGB4444);
+        levelText = g.newPixmap("BattleScene/PlayerLevel.png", Graphics.PixmapFormat.ARGB4444);
+        numbers = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
+        expGained = 0;
+        expGainedDisplay = new NumberDisplay(g, numbers, 40, 5, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        levelDisplay = new NumberDisplay(g, numbers, 40, 10, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)buttonBackgroundImage.getHeight();
 
@@ -126,9 +145,9 @@ public class BattleScreen extends Screen {
         enemyHealth = new DisplayBar(g, barBackground, barForeground, 52, 55, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         if(game.getData().GetPetChoice() == 1)
-            player = new AnimatedPixmap(g, petImage[game.getData().GetPetChoice()], 6, 35, 12, 3, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+            player = new AnimatedPixmap(g, petImage[game.getData().GetPetChoice()], 6, 35, 8, 3, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
         else
-            player = new AnimatedPixmap(g, petImage[game.getData().GetPetChoice()], 6, 35, 12, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
+            player = new AnimatedPixmap(g, petImage[game.getData().GetPetChoice()], 6, 35, 8, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         enemies = new Enemy[5];
         currentLevel = level;
@@ -136,10 +155,11 @@ public class BattleScreen extends Screen {
         SetEnemies();
 
         currentEnemy = 0;
-        waitTime = 1.55f;
         currentTimer = 0;
         step1 = false;
         step2 = false;
+        step3 = false;
+        showStats = false;
         attackChosen = false;
     }
 
@@ -216,19 +236,27 @@ public class BattleScreen extends Screen {
             }
 
             // Wait
-            if(currentTimer > 3) {
+            if(currentTimer > 4 && !step3) {
                 // Check for enemy death
                 if (enemies[currentEnemy].GetCurrentHP() <= 0) {
                     if (currentEnemy < enemies.length - 1) {
                         game.getData().SetPetExperience(enemies[currentEnemy].GetExpGiven());
+                        expGained = enemies[currentEnemy].GetExpGiven();
                         currentEnemy++;
                         enemyHealth.fillAmount = (float) enemies[currentEnemy].GetCurrentHP() / (float) enemies[currentEnemy].GetMaxHP();
+                        currentPlayerAttack = -1;
+                        currentEnemyAttack = -1;
+                        showStats = true;
+                        step3 = true;
                     } else {
-                        game.setScreen(new WinScreen(game));
+                        // Player has won
+                        game.setScreen(new WinScreen(game, currentLevel));
                         return;
                     }
                 }
+            }
 
+            if((currentTimer > 8.5 && showStats) || (currentTimer > 4 && !showStats)) {
                 // Check for player death
                 if (game.getData().GetHP() <= 0) {
                     if (game.getData().GetNumOfItem1() > 0 ||
@@ -237,9 +265,11 @@ public class BattleScreen extends Screen {
                             game.getData().GetNumOfItem4() > 0 ||
                             game.getData().GetNumOfItem5() > 0 ||
                             game.getData().GetMoney() > 200) {
+                        // Player has blacked out, but has items to heal
                         game.setScreen(new LoseScreen(game));
                         return;
                     } else {
+                        // Player loses the game
                         game.setScreen(new GameOverScreen(game));
                         return;
                     }
@@ -249,6 +279,8 @@ public class BattleScreen extends Screen {
                 currentTimer = 0;
                 step1 = false;
                 step2 = false;
+                step3 = false;
+                showStats = false;
                 attackChosen = false;
             }
         }
@@ -271,6 +303,15 @@ public class BattleScreen extends Screen {
         if(currentEnemyAttack > -1)
         {
             g.drawPixmap(attackIcons[currentEnemyAttack], 60, 5, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        }
+
+        if(showStats)
+        {
+            g.drawPixmap(exp, 4, 5, 246, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+            g.drawPixmap(plusSymbol, 33, 5, 0, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+            g.drawPixmap(levelText, 5, 10, 281, 0, buttonBackgroundImage.getWidth(), buttonBackgroundImage.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+            expGainedDisplay.Draw(Integer.toString(expGained), 2);
+            levelDisplay.Draw(Integer.toString(game.getData().GetPetLevel()), 2);
         }
 
         // Draw player and enemy
@@ -355,7 +396,7 @@ public class BattleScreen extends Screen {
         {
             // player loses
             playerMultiplier = 0.5f;
-            enemyMultiplier = 1.5f;
+            enemyMultiplier = 1.2f;
         }
         else
         {
@@ -378,38 +419,39 @@ public class BattleScreen extends Screen {
         {
             case 1:
             {
-                enemies[0] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 5, 2, 100);
-                enemies[1] = new Enemy(game.getGraphics(), smlEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 5, 2, 200);
-                enemies[2] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 7, 3, 250);
-                enemies[3] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 7, 4, 250);
-                enemies[4] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 9, 5, 300);
+                enemies[0] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 10, 3, 50);
+                enemies[1] = new Enemy(game.getGraphics(), smlEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 10, 3, 60);
+                enemies[2] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 16, 4, 70);
+                enemies[3] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 16, 4, 80);
+                enemies[4] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 19, 5, 200);
+
             }
                 break;
             case 2:
             {
-                enemies[0] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 7, 5, 400);
-                enemies[1] = new Enemy(game.getGraphics(), smlEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 9, 5, 400);
-                enemies[2] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 12, 7, 450);
-                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 14, 7, 550);
-                enemies[4] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 16, 8, 600);
+                enemies[0] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 28, 8, 150);
+                enemies[1] = new Enemy(game.getGraphics(), smlEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 28, 8, 150);
+                enemies[2] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 31, 9, 200);
+                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 31, 9, 200);
+                enemies[4] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 34, 12, 300);
             }
                 break;
             case 3:
             {
-                enemies[0] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 12, 6, 500);
-                enemies[1] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 13, 8, 500);
-                enemies[2] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 15, 9, 550);
-                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 16, 10, 550);
-                enemies[4] = new Enemy(game.getGraphics(), smlEnemyBoss, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 30, 5, 600);
+                enemies[0] = new Enemy(game.getGraphics(), smlEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 46, 13, 450);
+                enemies[1] = new Enemy(game.getGraphics(), smlEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 46, 13, 450);
+                enemies[2] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 49, 15, 550);
+                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 49, 15, 550);
+                enemies[4] = new Enemy(game.getGraphics(), smlEnemyBoss, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 70, 8, 600);
             }
                 break;
             case 4:
             {
-                enemies[0] = new Enemy(game.getGraphics(), smlEnemyBoss, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 25, 5, 600);
-                enemies[1] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 16, 10, 650);
-                enemies[2] = new Enemy(game.getGraphics(), lrgEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 18, 11, 700);
-                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 19, 13, 750);
-                enemies[4] = new Enemy(game.getGraphics(), lrgEnemy4, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 25, 15, 800);
+                enemies[0] = new Enemy(game.getGraphics(), smlEnemyBoss, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 70, 10, 650);
+                enemies[1] = new Enemy(game.getGraphics(), lrgEnemy1, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 58, 15, 650);
+                enemies[2] = new Enemy(game.getGraphics(), lrgEnemy2, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 61, 16, 700);
+                enemies[3] = new Enemy(game.getGraphics(), lrgEnemy3, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 58, 17, 700);
+                enemies[4] = new Enemy(game.getGraphics(), lrgEnemy4, 68, 35, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight(), bgToScreenRatio, 64, 17, 900);
             }
                 break;
             default:

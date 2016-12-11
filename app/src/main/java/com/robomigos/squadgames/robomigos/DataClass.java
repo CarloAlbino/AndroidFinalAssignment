@@ -96,35 +96,35 @@ public class DataClass{
             case 3:
             case 4:
             case 5:
-                neededEXP = 350;
+                neededEXP = 200;
                 break;
             case 6:
             case 7:
             case 8:
             case 9:
-                neededEXP = 450;
+                neededEXP = 400;
                 break;
             case 10:
             case 11:
             case 12:
-                neededEXP = 550;
+                neededEXP = 700;
                 break;
             case 13:
             case 14:
             case 15:
-                neededEXP = 700;
-                break;
-            case 16:
-                neededEXP = 900;
-                break;
-            case 17:
                 neededEXP = 1000;
                 break;
-            case 18:
+            case 16:
                 neededEXP = 1500;
                 break;
+            case 17:
+                neededEXP = 2000;
+                break;
+            case 18:
+                neededEXP = 2500;
+                break;
             case 19:
-                neededEXP = 3000;
+                neededEXP = 4000;
                 break;
             default:
                 // Max Level
