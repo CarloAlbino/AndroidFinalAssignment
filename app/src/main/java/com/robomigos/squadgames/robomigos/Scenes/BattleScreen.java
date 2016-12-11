@@ -5,6 +5,7 @@ import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
 import com.framework.Screen;
+import com.framework.Sound;
 import com.robomigos.squadgames.robomigos.AnimatedPixmap;
 import com.robomigos.squadgames.robomigos.Button;
 import com.robomigos.squadgames.robomigos.DisplayBar;
@@ -75,6 +76,8 @@ public class BattleScreen extends Screen {
 
     public DisplayBar playerHealth;
     public DisplayBar enemyHealth;
+
+    private Sound damageSound;
 
     public BattleScreen(Game game, int level)
     {
@@ -161,6 +164,9 @@ public class BattleScreen extends Screen {
         step3 = false;
         showStats = false;
         attackChosen = false;
+
+        LoadNewBackgroundMusic("Audio/Music/Battle.ogg");
+        damageSound = game.getAudio().newSound("Audio/SFX/Hit.ogg");
     }
 
     @Override
@@ -219,9 +225,9 @@ public class BattleScreen extends Screen {
             // Wait
             if(currentTimer > 1 && !step1) {
                 // Update enemy health bar
+                damageSound.play(1);
                 enemyHealth.fillAmount = (float) enemies[currentEnemy].GetCurrentHP() / (float) enemies[currentEnemy].GetMaxHP();
                 step1 = true;
-
             }
             // Wait
 
@@ -231,6 +237,7 @@ public class BattleScreen extends Screen {
             // Wait
             if(currentTimer > 2 && !step2) {
                 // Update player health bar
+                damageSound.play(1);
                 playerHealth.fillAmount = (float) game.getData().GetHP() / (float) game.getData().GetMaxHP();
                 step2 = true;
             }
@@ -264,8 +271,7 @@ public class BattleScreen extends Screen {
                             game.getData().GetNumOfItem2() > 0 ||
                             game.getData().GetNumOfItem3() > 0 ||
                             game.getData().GetNumOfItem4() > 0 ||
-                            game.getData().GetNumOfItem5() > 0 ||
-                            game.getData().GetMoney() > 200) {
+                            game.getData().GetMoney() > 20) {
                         // Player has blacked out, but has items to heal
                         game.setScreen(new LoseScreen(game));
                         return;

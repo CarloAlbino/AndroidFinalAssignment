@@ -38,6 +38,7 @@ public class GameOverScreen extends Screen {
 
         game.getData().ResetAll(game.getFileIO());
 
+        LoadNewBackgroundMusic("Audio/Music/GameOver.ogg");
     }
 
     @Override

@@ -129,6 +129,7 @@ public class HomeScreen extends Screen {
         //character = new AnimatedPixmap(g, robotFrog, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
         //character = new AnimatedPixmap(g, robotMan, 15, 47, 6, 2, 256, 256, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
+        LoadNewBackgroundMusic("Audio/Music/Home.ogg");
     }
 
     @Override
