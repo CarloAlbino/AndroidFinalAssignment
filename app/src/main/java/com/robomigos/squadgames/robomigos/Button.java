@@ -3,6 +3,8 @@ package com.robomigos.squadgames.robomigos;
 import com.framework.Graphics;
 import com.framework.Input;
 import com.framework.Pixmap;
+import com.framework.Sound;
+import com.framework.Audio;
 
 /**
  * Created by Carlo Albino on 2016-11-10.
@@ -13,6 +15,7 @@ public class Button extends UIElement {
     private Pixmap imageNormal;         // Image of the button in a normal state
     private Pixmap imagePressed;        // Image of the button in a pressed state
     private boolean isPressed;          // Is the button pressed?
+    private static Sound clickSound;
 
     public Button(Graphics g, Pixmap normal, Pixmap pressed, int l, int t, int srcX, int srcY, int screenW, int screenH, float ratio)
     {
@@ -64,10 +67,13 @@ public class Button extends UIElement {
     public boolean IsInBounds(Input.TouchEvent event)
     {
         if (event.x > screenLeft && event.x < screenRight - 1 &&
-                event.y > screenTop && event.y < screenBottom - 1)
+                event.y > screenTop && event.y < screenBottom - 1) {
+            clickSound.play(1);
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     // Pass in if the button is pressed or not
@@ -75,4 +81,11 @@ public class Button extends UIElement {
     {
         isPressed = b;
     }
+
+    public void SetAudio(Audio a, String fileName)
+    {
+        clickSound = a.newSound(fileName);
+    }
+
+
 }

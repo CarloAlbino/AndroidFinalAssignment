@@ -1,6 +1,7 @@
 package com.robomigos.squadgames.robomigos.Scenes;
 
 import com.framework.Input;
+import com.framework.Music;
 import com.framework.Pixmap;
 import com.framework.Screen;
 import com.framework.Game;
@@ -29,6 +30,7 @@ public class TitleScreen extends Screen {
     private Button creditsButton;
 
 
+
     public TitleScreen(Game game)
     {
         super(game);
@@ -48,6 +50,10 @@ public class TitleScreen extends Screen {
         startButton = new Button(g, startButtonImage, startButtonImage, 33, 50, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         howToButton = new Button(g, howToPlayButtonImage, howToPlayButtonImage, 33, 60, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         creditsButton = new Button(g, creditsButtonImage, creditsButtonImage, 33, 70, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        startButton.SetAudio(game.getAudio(), "Audio/SFX/PressButton.ogg");
+
+        LoadNewBackgroundMusic("Audio/Music/Title.ogg");
     }
 
 

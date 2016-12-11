@@ -41,10 +41,10 @@ public class InventoryScreen extends Screen {
 
     public static Pixmap font;
     //public NumberDisplay levelDisplay;
-    //public NumberDisplay ApplePrice;
-    //public NumberDisplay CakePrice;
-    //public NumberDisplay SmoothyPrice;
-    //public NumberDisplay EnergyPrice;
+    public NumberDisplay ApplePrice;
+    public NumberDisplay CakePrice;
+    public NumberDisplay SmoothyPrice;
+    public NumberDisplay EnergyPrice;
 
     public InventoryScreen(Game game)
     {
@@ -56,7 +56,7 @@ public class InventoryScreen extends Screen {
         backButtonNormal = g.newPixmap("BackButtonUnPressed.png", Graphics.PixmapFormat.ARGB4444);
         backButtonPressed = g.newPixmap("BackButtonPressed.png", Graphics.PixmapFormat.ARGB4444);
         BuyButtons = g.newPixmap("BuyButtons.png", Graphics.PixmapFormat.ARGB4444);
-        title = g.newPixmap("StoreLogo.png", Graphics.PixmapFormat.ARGB4444);
+        title = g.newPixmap("InventoryLogo.png", Graphics.PixmapFormat.ARGB4444);
         Appletxt = g.newPixmap("Appletxt.png", Graphics.PixmapFormat.ARGB4444);
         Caketxt = g.newPixmap("Caketxt.png", Graphics.PixmapFormat.ARGB4444);
         EnergyDrinktxt = g.newPixmap("EnergyDrinktxt.png", Graphics.PixmapFormat.ARGB4444);
@@ -67,12 +67,12 @@ public class InventoryScreen extends Screen {
         EnergyDrink = g.newPixmap("EnergyDrink.png", Graphics.PixmapFormat.ARGB4444);
         Smoothy = g.newPixmap("Smoothy.png", Graphics.PixmapFormat.ARGB4444);
 
-        //font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
+        font = g.newPixmap("numbersBlack.png", Graphics.PixmapFormat.ARGB4444);
         //levelDisplay = new NumberDisplay(g, font, 18, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //ApplePrice = new NumberDisplay(g, font, 90, 26, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //CakePrice = new NumberDisplay(g, font, 90, 41, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //EnergyPrice = new NumberDisplay(g, font, 90, 56, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        //SmoothyPrice = new NumberDisplay(g, font, 90, 71, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        ApplePrice = new NumberDisplay(g, font, 90, 26, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        CakePrice = new NumberDisplay(g, font, 90, 41, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        EnergyPrice = new NumberDisplay(g, font, 90, 56, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        SmoothyPrice = new NumberDisplay(g, font, 90, 71, g.getWidth(), g.getHeight(), bgToScreenRatio);
         // Get the background to screen ratio
         bgToScreenRatio = (float)g.getHeight() / (float)background.getHeight();
 
@@ -82,6 +82,8 @@ public class InventoryScreen extends Screen {
         CakeButton = new Button(g, BuyButtons, BuyButtons, 18, 41, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         EnergyDrinkButton = new Button(g, BuyButtons, BuyButtons, 18, 56, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         SmoothyButton = new Button(g, BuyButtons, BuyButtons, 18, 71, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        LoadNewBackgroundMusic("Audio/Music/Shop.ogg");
     }
 
     @Override
@@ -112,29 +114,69 @@ public class InventoryScreen extends Screen {
 
                 if(AppleButton.IsInBounds(event))
                 {
-                    game.getData().AddItem1(-1);
-                    game.getData().AddHunger(0.2f);
-                   //game.getData().AddMoney(-20);
+                    if(game.getData().GetNumOfItem1() > 0) {
+                        game.getData().AddItem1(-1);
+                        game.getData().AddHunger(0.2f);
+                        game.getData().AddHP(5);
+
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
                 if(CakeButton.IsInBounds(event))
                 {
-                    game.getData().AddItem2(-1);
-                    game.getData().AddHappiness(0.3f);
-                    game.getData().AddHunger(1.0f);
-                    //game.getData().AddMoney(-30);
+                    if(game.getData().GetNumOfItem2() > 0) {
+                        game.getData().AddItem2(-1);
+                        game.getData().AddHunger(0.9f);
+                        game.getData().AddHP(7);
+
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        } else {
+                            game.getData().AddHappiness(0.4f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
-                    game.getData().AddItem3(-1);
-                    game.getData().AddHappiness(-0.3f);
-                    game.getData().AddHunger(0.4f);
-                    //game.getData().AddMoney(-40);
+                    if(game.getData().GetNumOfItem3() > 0) {
+                        game.getData().AddItem3(-1);
+                        game.getData().AddHunger(-0.4f);
+                        game.getData().AddHP(10);
+
+                        game.getData().AddHappiness(-0.3f);
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
-                    game.getData().AddItem4(-1);
-                    game.getData().AddHunger(-0.3f);
-                    //game.getData().AddMoney(-50);
+                    if(game.getData().GetNumOfItem4() > 0) {
+                        game.getData().AddItem4(-1);
+                        game.getData().AddHunger(0.2f);
+                        game.getData().AddHP(20);
+
+                        if (game.getData().GetHunger() >= 1.0f) {
+                            game.getData().AddHappiness(-0.15f);
+                        } else {
+                            game.getData().AddHappiness(0.3f);
+                        }
+
+                        game.getData().SaveGame(game.getFileIO());
+                        game.setScreen(new HomeScreen(game));
+                        return;
+                    }
                 }
             }
         }
@@ -167,11 +209,11 @@ public class InventoryScreen extends Screen {
        // g.drawPixmap(currency, 79, 57, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
         //g.drawPixmap(currency, 79, 72, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
-        //levelDisplay.Draw(Integer.toString(game.getData().GetMoney()), 3);
-        //ApplePrice.Draw(Integer.toString(20), 2);
-        //CakePrice.Draw(Integer.toString(30), 2);
-        //EnergyPrice.Draw(Integer.toString(40), 2);
-        //SmoothyPrice.Draw(Integer.toString(50), 2);
+        //levelDisplay.Draw(Integer.toString(game.getData().GetNumOfItem1()), 3);
+        ApplePrice.Draw(Integer.toString(game.getData().GetNumOfItem1()), 2);
+        CakePrice.Draw(Integer.toString(game.getData().GetNumOfItem2()), 2);
+        EnergyPrice.Draw(Integer.toString(game.getData().GetNumOfItem3()), 2);
+        SmoothyPrice.Draw(Integer.toString(game.getData().GetNumOfItem4()), 2);
         backButton.Draw();
     }
 

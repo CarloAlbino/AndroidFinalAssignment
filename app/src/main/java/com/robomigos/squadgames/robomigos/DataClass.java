@@ -26,7 +26,6 @@ public class DataClass{
     private int numOfItem2;
     private int numOfItem3;
     private int numOfItem4;
-    private int numOfItem5;
     private float happinessLvl;
     private float hungerLvl;
     private int hp;
@@ -44,12 +43,11 @@ public class DataClass{
         hp = 10;
         maxHP = 10;
         atkPower = 6;
-        money = 100000;
+        money = 500;
         numOfItem1 = 2;
         numOfItem2 = 2;
         numOfItem3 = 2;
         numOfItem4 = 2;
-        numOfItem5 = 2;
     }
 
     public int GetPetChoice() {return petChoice;}
@@ -61,12 +59,61 @@ public class DataClass{
     public int GetNumOfItem2() {return numOfItem2;}
     public int GetNumOfItem3() {return numOfItem3;}
     public int GetNumOfItem4() {return numOfItem4;}
-    public int GetNumOfItem5() {return numOfItem5;}
     public float GetHappiness() {return happinessLvl;}
     public float GetHunger() {return hungerLvl;}
     public int GetHP() {return hp;}
     public int GetMaxHP() {return maxHP;}
     public int GetAtkPower() {return atkPower;}
+
+    public int GetNeededExp()
+    {
+        int neededEXP;
+        switch(petLevel)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                neededEXP = 200;
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                neededEXP = 400;
+                break;
+            case 10:
+            case 11:
+            case 12:
+                neededEXP = 700;
+                break;
+            case 13:
+            case 14:
+            case 15:
+                neededEXP = 1000;
+                break;
+            case 16:
+                neededEXP = 1500;
+                break;
+            case 17:
+                neededEXP = 2000;
+                break;
+            case 18:
+                neededEXP = 2500;
+                break;
+            case 19:
+                neededEXP = 4000;
+                break;
+            default:
+                // Max Level
+                neededEXP = 0;
+                break;
+        }
+
+        return neededEXP - petExperience;
+    }
 
     ////////////////////////////////
     // Manipulating Game Settings //
@@ -96,35 +143,35 @@ public class DataClass{
             case 3:
             case 4:
             case 5:
-                neededEXP = 350;
+                neededEXP = 200;
                 break;
             case 6:
             case 7:
             case 8:
             case 9:
-                neededEXP = 450;
+                neededEXP = 400;
                 break;
             case 10:
             case 11:
             case 12:
-                neededEXP = 550;
+                neededEXP = 700;
                 break;
             case 13:
             case 14:
             case 15:
-                neededEXP = 700;
-                break;
-            case 16:
-                neededEXP = 900;
-                break;
-            case 17:
                 neededEXP = 1000;
                 break;
-            case 18:
+            case 16:
                 neededEXP = 1500;
                 break;
+            case 17:
+                neededEXP = 2000;
+                break;
+            case 18:
+                neededEXP = 2500;
+                break;
             case 19:
-                neededEXP = 3000;
+                neededEXP = 4000;
                 break;
             default:
                 // Max Level
@@ -220,13 +267,6 @@ public class DataClass{
             numOfItem4 = 0;
         }
     }
-    public void AddItem5(int itemDiff) {
-        numOfItem5 += itemDiff;
-        if(numOfItem5 < 0)
-        {
-            numOfItem5 = 0;
-        }
-    }
 
     ////////////////////////////////
     // Manipulating the Save File //
@@ -247,7 +287,6 @@ public class DataClass{
             numOfItem2 = Integer.parseInt(in.readLine());
             numOfItem3 = Integer.parseInt(in.readLine());
             numOfItem4 = Integer.parseInt(in.readLine());
-            numOfItem5 = Integer.parseInt(in.readLine());
             happinessLvl = Float.parseFloat(in.readLine());
             hungerLvl = Float.parseFloat(in.readLine());
             hp = Integer.parseInt(in.readLine());
@@ -284,7 +323,6 @@ public class DataClass{
             out.write(Integer.toString(numOfItem2));
             out.write(Integer.toString(numOfItem3));
             out.write(Integer.toString(numOfItem4));
-            out.write(Integer.toString(numOfItem5));
             out.write(Float.toString(happinessLvl));
             out.write(Float.toString(hungerLvl));
             out.write(Integer.toString(hp));
@@ -298,5 +336,25 @@ public class DataClass{
             } catch (IOException e) {
             }
         }
+    }
+
+    public void ResetAll(FileIO saveFile)
+    {
+        petChoice = -1; // If after load the petChoice is -1 then it is a new game.
+        unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
+        petLevel = 0;
+        petExperience = 0;
+        happinessLvl = 1.0f;
+        hungerLvl = 0.0f;
+        hp = 10;
+        maxHP = 10;
+        atkPower = 6;
+        money = 100;
+        numOfItem1 = 2;
+        numOfItem2 = 2;
+        numOfItem3 = 2;
+        numOfItem4 = 2;
+
+        SaveGame(saveFile);
     }
 }

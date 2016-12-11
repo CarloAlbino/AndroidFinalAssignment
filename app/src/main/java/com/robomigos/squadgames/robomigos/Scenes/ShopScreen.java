@@ -82,6 +82,8 @@ public class ShopScreen extends Screen {
         CakeButton = new Button(g, BuyButtons, BuyButtons, 18, 41, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         EnergyDrinkButton = new Button(g, BuyButtons, BuyButtons, 18, 56, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         SmoothyButton = new Button(g, BuyButtons, BuyButtons, 18, 71, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+
+        LoadNewBackgroundMusic("Audio/Music/Shop.ogg");
     }
 
     @Override
@@ -112,23 +114,36 @@ public class ShopScreen extends Screen {
 
                 if(AppleButton.IsInBounds(event))
                 {
-                    game.getData().AddItem1(1);
-                    game.getData().AddMoney(-20);
+                    if(game.getData().GetMoney() >= 20) {
+                        game.getData().AddItem1(1);
+                        game.getData().AddMoney(-20);
+                        game.getData().SaveGame(game.getFileIO());
+                    }
                 }
                 if(CakeButton.IsInBounds(event))
                 {
-                    game.getData().AddItem2(1);
-                    game.getData().AddMoney(-30);
+                    if(game.getData().GetMoney() >= 30) {
+                        game.getData().AddItem2(1);
+                        game.getData().AddMoney(-30);
+                        game.getData().SaveGame(game.getFileIO());
+                    }
                 }
                 if(EnergyDrinkButton.IsInBounds(event))
                 {
-                    game.getData().AddItem3(1);
-                    game.getData().AddMoney(-40);
+                    if(game.getData().GetMoney() >= 40) {
+                        game.getData().AddItem3(1);
+                        game.getData().AddMoney(-40);
+                        game.getData().SaveGame(game.getFileIO());
+                    }
+
                 }
                 if(SmoothyButton.IsInBounds(event))
                 {
-                    game.getData().AddItem4(1);
-                    game.getData().AddMoney(-50);
+                    if(game.getData().GetMoney() >= 50) {
+                        game.getData().AddItem4(1);
+                        game.getData().AddMoney(-50);
+                        game.getData().SaveGame(game.getFileIO());
+                    }
                 }
             }
         }
