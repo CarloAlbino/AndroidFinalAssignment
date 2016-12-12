@@ -35,7 +35,7 @@ public class LoseScreen extends Screen {
 
         // Create buttons
         backButton = new Button(g, backButtonNormal, backButtonPressed, 0, 100 - ((int)((float) backButtonNormal.getHeight()/(float)g.getHeight() * 100)), 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-
+        game.getData().AddHappiness(-0.5f);
         game.getData().SaveGame(game.getFileIO());
     }
 

@@ -38,7 +38,7 @@ public class DataClass{
         unlockedLevel = 1; // 1 is only easy unlocked, 5 is release unlocked.
         petLevel = 0;
         petExperience = 0;
-        happinessLvl = 1.0f;
+        happinessLvl = 0.25f;
         hungerLvl = 0.0f;
         hp = 10;
         maxHP = 10;
