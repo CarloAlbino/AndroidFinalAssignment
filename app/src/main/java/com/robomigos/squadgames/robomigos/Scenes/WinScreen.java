@@ -82,19 +82,10 @@ public class WinScreen extends Screen {
                 moneyGained = 100;
                 break;
         }
-        //Unlock the next level
-        if(gameDifficulty == game.getData().GetUnlockedLevel())
-        {
-            if(gameDifficulty < 5) {
-                game.getData().SetUnlockLevel(gameDifficulty + 1);
-            }
-        }
-
 
         // Add the EXP and Money to the player data
         game.getData().SetPetExperience(bonusExp);
         game.getData().AddMoney(moneyGained);
-        game.getData().AddHappiness(+0.2f);
         // Save the game
         game.getData().SaveGame(game.getFileIO());
     }

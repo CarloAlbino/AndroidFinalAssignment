@@ -28,18 +28,12 @@ public class HomeScreen extends Screen {
     public static Pixmap quitButtonImage;
     public static Pixmap shopButtonImage;
     public static Pixmap inventoryButtonImage;
-    //public static Pixmap poopImage;
+    public static Pixmap poopImage;
 
     //Mood Images
-    //public static Pixmap angryFaceImage;
-    //public static Pixmap annoyedFaceImage;
+    public static Pixmap angryFaceImage;
+    public static Pixmap annoyedFaceImage;
     public static Pixmap happyFaceImage;
-
-    // Heart
-    public static Pixmap heart;
-
-    // Hunger
-    public static Pixmap hunger;
 
 
     //Bar images for Happy,Hunger and Health
@@ -47,13 +41,13 @@ public class HomeScreen extends Screen {
     public static Pixmap happinessBarImage;
     public static Pixmap healthBarImage;
     public static Pixmap hungerBarImage;
-    //public static Pixmap dojoImage;
+    public static Pixmap dojoImage;
 
     //Level box, TopUI,background and BottomUI
     public static Pixmap levelBoxImage;
-    //public static Pixmap topUIImage;
-    //public static Pixmap bottomUIImage;
-    //public static Pixmap homeBackGroundImage;
+    public static Pixmap topUIImage;
+    public static Pixmap bottomUIImage;
+    public static Pixmap homeBackGroundImage;
 
     //Level number
     public static Pixmap font;
@@ -73,7 +67,7 @@ public class HomeScreen extends Screen {
     public Button shopButton;
     public Button inventoryButton;
     public Button quitButton;
-    //public Button robotPoop;
+    public Button robotPoop;
 
 
     //Bars
@@ -83,12 +77,12 @@ public class HomeScreen extends Screen {
 
     // Animated Character
     public AnimatedPixmap[] character;
-    //public AnimatedPixmap poop;
+    public AnimatedPixmap poop;
 
 
 
     //Array List for poop(Random Spawning)
-    //public List<Button> m_poop;
+    public List<Button> m_poop;
 
     //Array list for Different states of emotions
     //public List<Image> m_Emotions;
@@ -116,18 +110,12 @@ public class HomeScreen extends Screen {
         //angryFaceImage = g.newPixmap("Angry.png", Graphics.PixmapFormat.RGB565);
         //annoyedFaceImage =  g.newPixmap("AnnoyedFace.png", Graphics.PixmapFormat.RGB565);
 
-        // Heart
-        heart = g.newPixmap("Heart.png", Graphics.PixmapFormat.ARGB4444);
-
-        // Hunger
-        hunger = g.newPixmap("Fulness.png", Graphics.PixmapFormat.ARGB4444);
-
         //Button Images
         battleButtonImage = g.newPixmap("Battle.png",Graphics.PixmapFormat.ARGB4444);
         quitButtonImage = g.newPixmap("Quit.png",Graphics.PixmapFormat.ARGB4444);
         shopButtonImage =g.newPixmap("Shop.png",Graphics.PixmapFormat.ARGB4444);
         inventoryButtonImage =g.newPixmap("Inventory.png",Graphics.PixmapFormat.ARGB4444);
-        //poopImage = g.newPixmap("poop.png", Graphics.PixmapFormat.ARGB4444);
+        poopImage = g.newPixmap("poop.png", Graphics.PixmapFormat.ARGB4444);
 
 
         //Robot references to pixmap
@@ -150,12 +138,12 @@ public class HomeScreen extends Screen {
         shopButton = new Button(g, shopButtonImage, shopButtonImage, 58, 75, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
        //Poop Button
-        //robotPoop = new Button(g, poopImage, poopImage, 65, 45, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        robotPoop = new Button(g, poopImage, poopImage, 65, 45, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Display Bars
         healthBar = new DisplayBar(g, backBarBorderImage, healthBarImage, 14, 4, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         fullnessBar = new DisplayBar(g, backBarBorderImage, hungerBarImage, 14, 12, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
-        happinessBar =new DisplayBar(g, backBarBorderImage, happinessBarImage, 14,20, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
+        happinessBar =new DisplayBar(g, backBarBorderImage, happinessBarImage, 14, 20, 0, 0, g.getWidth(), g.getHeight(), bgToScreenRatio);
         levelDisplay = new NumberDisplay(g, font, 77, 14, g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         // Draw animated characters (This is the Array list of the characters)
@@ -222,7 +210,7 @@ public class HomeScreen extends Screen {
 
 
             //Poop pickup
-            /*if(event.type == Input.TouchEvent.TOUCH_UP)
+            if(event.type == Input.TouchEvent.TOUCH_UP)
             {
                 for(int j = 0; j < m_poop.size(); ++j)
                {
@@ -238,7 +226,7 @@ public class HomeScreen extends Screen {
 
                }
 
-            }*/
+            }
 
 
 
@@ -267,7 +255,7 @@ public class HomeScreen extends Screen {
         //Making the bars work by setting how much the bar is full
 
         //Fill Amount Bars Code
-        healthBar.fillAmount = (float)game.getData().GetHP()/(float)game.getData().GetMaxHP();
+        healthBar.fillAmount = game.getData().GetHP()/game.getData().GetMaxHP();
         happinessBar.fillAmount = game.getData().GetHappiness();
         fullnessBar.fillAmount = game.getData().GetHunger();
 
@@ -306,9 +294,7 @@ public class HomeScreen extends Screen {
         levelDisplay.Draw(Integer.toString(game.getData().GetPetLevel()), 3);
 
         //Emotions
-        g.drawPixmap(happyFaceImage, 1, 18, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(heart, 1, 4, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
-        g.drawPixmap(hunger, 1, 10, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
+        g.drawPixmap(happyFaceImage, 1, 15, 0, 0, background.getWidth(), background.getHeight(), g.getWidth(), g.getHeight(), bgToScreenRatio);
 
         //Character
         character[game.getData().GetPetChoice()].Draw(deltaTime);
@@ -321,13 +307,13 @@ public class HomeScreen extends Screen {
         shopButton.Draw();
 
         //For loop here to draw
-        /*if(m_poop != null) {
+        if(m_poop != null) {
             for (int k = 0; k < m_poop.size(); ++k) {
 
                 m_poop.get(k).Draw();
 
             }
-        }*/
+        }
 
     }
 

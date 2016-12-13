@@ -1,6 +1,5 @@
 package com.robomigos.squadgames.robomigos.Scenes;
 
-import com.framework.FileIO;
 import com.framework.Game;
 import com.framework.Graphics;
 import com.framework.Input;
@@ -205,8 +204,6 @@ public class BattleScreen extends Screen {
                     }
 
                     if (runButton.IsInBounds(event)) {
-                        game.getData().AddHappiness(-0.2f);
-                        game.getData().SaveGame(game.getFileIO());
                         game.setScreen(new HomeScreen(game));
                         return;
                     }
@@ -251,8 +248,6 @@ public class BattleScreen extends Screen {
                 if (enemies[currentEnemy].GetCurrentHP() <= 0) {
                     if (currentEnemy < enemies.length - 1) {
                         game.getData().SetPetExperience(enemies[currentEnemy].GetExpGiven());
-                        game.getData().AddHappiness(0.05f);
-                        game.getData().AddHunger(-0.1f);
                         expGained = enemies[currentEnemy].GetExpGiven();
                         currentEnemy++;
                         enemyHealth.fillAmount = (float) enemies[currentEnemy].GetCurrentHP() / (float) enemies[currentEnemy].GetMaxHP();
@@ -417,7 +412,7 @@ public class BattleScreen extends Screen {
             enemyMultiplier = 0.5f;
         }
         // Damage the enemy first
-        enemies[currentEnemy].Damage((int)((float)game.getData().GetAtkPower() * playerMultiplier * (1.0f + (game.getData().GetHappiness() * 0.5f))));
+        enemies[currentEnemy].Damage((int)((float)game.getData().GetAtkPower() * playerMultiplier));
         // If the enemy is not dead damage the player
         if(enemies[currentEnemy].GetCurrentHP() > 0) {
             game.getData().AddHP(-(int) ((float) enemies[currentEnemy].GetAttackPower() * enemyMultiplier));
